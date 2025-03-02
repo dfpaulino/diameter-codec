@@ -33,19 +33,23 @@ Each AVP of type OctetString MUST be padded to align on a 32-bit
 @Value.Immutable
 public abstract class AvpHeader {
     public abstract int getAvpCode();
+
     public abstract byte getAvpFlags();
+
     public abstract int getAvpLength();
+
     public abstract Optional<Integer> getVendorId();
+
     @Value.Default
-     public boolean isVendorSpecific(){
-        return (getAvpFlags()&0x80)==0x80;
+    public boolean isVendorSpecific() {
+        return (getAvpFlags() & 0x80) == 0x80;
     }
 
     @Value.Default
-    public  int getPaddingSize(){
-        if(getAvpLength()%4>0){
-            return 4-getAvpLength()%4;
-        }else {
+    public int getPaddingSize() {
+        if (getAvpLength() % 4 > 0) {
+            return 4 - getAvpLength() % 4;
+        } else {
             return 0;
         }
     }

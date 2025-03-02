@@ -5,7 +5,6 @@ import org.example.diameter.Utils.ReadAvpHeader;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.AvpIdToAvpMapper;
-import org.example.diameter.avp.common.SupportedVendorId;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -75,11 +74,11 @@ public class DiameterPacket<T> {
             //read Data from AVP
             //create instance of avp eg new OriginHost(headers,buffer,position,)
             Avp<?> avp = AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
-                            .getAvpCode()).avpCreator.createInstance(avpHeaderheader,bytes,position);
-            String methodName = "set"+avp.getClass().getSimpleName();
+                    .getAvpCode()).avpCreator.createInstance(avpHeaderheader, bytes, position);
+            String methodName = "set" + avp.getClass().getSimpleName();
             try {
-                Method method = this.getClass().getDeclaredMethod(methodName,avp.getClass());
-                method.invoke(data,avp);
+                Method method = this.getClass().getDeclaredMethod(methodName, avp.getClass());
+                method.invoke(data, avp);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }

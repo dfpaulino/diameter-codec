@@ -52,8 +52,7 @@ public class EchoServer {
         if (r == -1 || new String(buffer.array()).trim().equals(POISON_PILL)) {
             client.close();
             System.out.println("Not accepting client messages anymore");
-        }
-        else {
+        } else {
             buffer.flip();
             client.write(buffer);
             buffer.clear();

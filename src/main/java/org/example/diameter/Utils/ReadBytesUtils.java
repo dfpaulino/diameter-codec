@@ -1,18 +1,27 @@
 package org.example.diameter.Utils;
 
-public class ReadBytesUtils {
-    public static int readNBytesAsInt(byte[] buffer,int position,int len){
+import java.util.Arrays;
 
-        int value=0;
+public class ReadBytesUtils {
+    public static int readNBytesAsInt(byte[] buffer, int position, int len) {
+
+        int value = 0;
         int i = 0;
-        while(i <len){
-            value|=(buffer[position+i]& 0xFF)<<(8*(len-i-1));
+        while (i < len) {
+            value |= (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
             i++;
         }
 
         return value;
     }
-    public static byte readByteAsByte(byte[] buffer,int position) {
-        return buffer[position];
+
+    public static byte[] readNBytesAsByteArray(byte[] buffer, int position, int len) {
+
+        return Arrays.copyOfRange(buffer, position, position + len);
     }
+
+    public static byte readByteAsByte(byte[] buffer, int position) {
+        return (byte) buffer[position];
+    }
+
 }

@@ -6,15 +6,18 @@ import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 
 public class VendorId extends Avp<Integer> {
-    public VendorId(AvpHeader header, byte[] buffer,int position) {
+    public static int avpCode = 266;
+    public static byte flags = (byte) 0x40;
+
+    public VendorId(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
     @Override
     public Integer decode(byte[] buffer, int position, AvpHeader header) {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        int offset = (header.isVendorSpecific()?12:8) + position;
+        int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        return ReadBytesUtils.readNBytesAsInt(buffer,offset,4);
+        return ReadBytesUtils.readNBytesAsInt(buffer, offset, 4);
     }
 }

@@ -3,9 +3,7 @@ package org.example.diameter.avp.common;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 
-import java.nio.charset.StandardCharsets;
-
-import static org.example.diameter.avp.AvpDecoders.OctectStringDecoder;
+import static org.example.diameter.avp.AvpDecoders.OctectStringUTF8Decoder;
 
 /*
  Each AVP of type OctetString MUST be padded to align on a 32-bit
@@ -15,14 +13,16 @@ import static org.example.diameter.avp.AvpDecoders.OctectStringDecoder;
    the AVP Length field.
  */
 public class OriginHost extends Avp<String> {
+    public static int avpCode = 264;
+    public static byte flags = 0x40;
 
-    public OriginHost(AvpHeader header, byte[] rawData,int position) {
-        super(header,rawData,position);
+    public OriginHost(AvpHeader header, byte[] rawData, int position) {
+        super(header, rawData, position);
     }
 
 
     @Override
     public String decode(byte[] buffer, int position, AvpHeader header) {
-        return OctectStringDecoder.decode(buffer,position,header);
+        return OctectStringUTF8Decoder.decode(buffer, position, header);
     }
 }

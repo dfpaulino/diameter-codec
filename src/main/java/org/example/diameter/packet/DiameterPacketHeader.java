@@ -1,6 +1,7 @@
 package org.example.diameter.packet;
 
 import org.immutables.value.Value;
+
 /*
 .  Diameter Header
 
@@ -27,16 +28,22 @@ import org.immutables.value.Value;
 public interface DiameterPacketHeader {
     //1 byte
     byte getVersion();
+
     // 3 bytes
     int getMessageLength();
+
     //1 byte
     byte getCommandFlags();
+
     //3 bytes
     int getCommandCode();
+
     //4 bytes
     int getApplicationId();
+
     // 4 bytes
     int getHopByHop();
+
     // 4 bytes
     int getEnd2End();
 }
