@@ -4,7 +4,6 @@ import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpDecoders;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.types.Address;
-import org.javatuples.Pair;
 
 public class AccessNetworkChargingAddress extends Avp<Address> {
     public static int avpCode = 501;

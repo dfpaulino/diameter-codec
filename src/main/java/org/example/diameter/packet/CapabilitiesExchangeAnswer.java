@@ -31,7 +31,7 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket<CapabilitiesExcha
 
     // AVP definitions
     @Setter
-    private  ResultCode resultCode;
+    private ResultCode resultCode;
     @Setter
     private OriginHost originHost;
     @Setter
@@ -62,11 +62,10 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket<CapabilitiesExcha
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
         this.supportedVendorId.add(supportedVendorId);
     }
+
     public void setSupportedVendorId(List<SupportedVendorId> supportedVendorId) {
         this.supportedVendorId.addAll(supportedVendorId);
     }
-
-
 
 
 }

@@ -1,10 +1,10 @@
 package org.example.diameter.avp.common;
 
 
-import org.example.diameter.utils.ReadAvpHeader;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.AvpIdToAvpMapper;
+import org.example.diameter.utils.ReadAvpHeader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

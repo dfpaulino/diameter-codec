@@ -1,11 +1,10 @@
 package org.example.diameter.packet;
 
 import lombok.Getter;
-import org.example.diameter.avp.AvpDecoders;
-import org.example.diameter.utils.ReadAvpHeader;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.AvpIdToAvpMapper;
+import org.example.diameter.utils.ReadAvpHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public abstract class DiameterPacket<T> {
     public DiameterPacket(DiameterPacketHeader header, byte[] buffer) {
         this.header = header;
         this.buffer = buffer;
-        this.data = this.decode(header,buffer);
+        this.data = this.decode(header, buffer);
     }
 
     public DiameterPacket(DiameterPacketHeader header, T data) {
@@ -57,12 +56,13 @@ public abstract class DiameterPacket<T> {
         this.data = data;
     }
 
-    public T getData(){
+    public T getData() {
         if (this.data == null) {
-            this.data = this.decode(this.header,this.buffer);
+            this.data = this.decode(this.header, this.buffer);
         }
         return this.data;
     }
+
     public byte[] getBuffer() {
         if (this.buffer.length == 0) {
             this.buffer = this.encode();
@@ -70,7 +70,7 @@ public abstract class DiameterPacket<T> {
         return buffer;
     }
 
-    public abstract T decode(DiameterPacketHeader header,byte[] buffer);
+    public abstract T decode(DiameterPacketHeader header, byte[] buffer);
 
     public void decode() {
         byte[] bytes = this.getBuffer();
@@ -83,9 +83,9 @@ public abstract class DiameterPacket<T> {
             // if supported....else skip and push position for next avp based on avpHeader lengh
             //read Data from AVP
             //create instance of avp eg new OriginHost(headers,buffer,position,)
-            AvpIdToAvpMapper.AvpDefinition avpDefinition =AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
+            AvpIdToAvpMapper.AvpDefinition avpDefinition = AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
                     .getAvpCode());
-            if(avpDefinition!=null) {
+            if (avpDefinition != null) {
                 Avp<?> avp = avpDefinition.avpCreator.createInstance(avpHeaderheader, buffer, position);
                 String methodName = "set" + avp.getClass().getSimpleName();
                 try {
@@ -101,7 +101,7 @@ public abstract class DiameterPacket<T> {
                 logger.warn("Unknown AVP ID [{}]", avpHeaderheader.getAvpCode());
             }
 
-            position+=avpHeaderheader.getAvpLength()+ avpHeaderheader.getPaddingSize();
+            position += avpHeaderheader.getAvpLength() + avpHeaderheader.getPaddingSize();
         }
     }
 

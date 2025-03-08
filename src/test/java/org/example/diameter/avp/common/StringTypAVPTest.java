@@ -1,8 +1,8 @@
 package org.example.diameter.avp.common;
 
+import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.utils.ReadAvpHeader;
 import org.example.diameter.utils.ReadBytesUtils;
-import org.example.diameter.avp.AvpHeader;
 import org.junit.jupiter.api.Test;
 
 import java.util.HexFormat;

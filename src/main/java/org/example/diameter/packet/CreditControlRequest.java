@@ -103,67 +103,92 @@ X[ 3GPP-PS-Data-Off-Status ]
 public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
 
     // AVP definitions
-    @Setter@Getter
+    @Setter
+    @Getter
     private SessionId sessionId;
-    @Setter@Getter
+    @Setter
+    @Getter
     private AuthApplicationId authApplicationId;
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginHost originHost;
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginRealm originRealm;
-    @Setter@Getter
+    @Setter
+    @Getter
     private DestinationRealm destinationRealm;
-    @Setter@Getter
+    @Setter
+    @Getter
     private CcRequestType ccRequestType;
-    @Setter@Getter
+    @Setter
+    @Getter
     private CcRequestNumber ccRequestNumber;
-    @Setter@Getter
+    @Setter
+    @Getter
     private DestinationHost destinationHost;
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginStateId originStateId;
     @Getter
     private List<SubscriptionId> subscriptionId;
     @Getter
     private List<SupportedFeatures> supportedFeatures;
-    @Setter@Getter
+    @Setter
+    @Getter
     private NetworkRequestSupport networkRequestSupport;
-    @Setter@Getter
+    @Setter
+    @Getter
     private BearerIdentifier bearerIdentifier;
-    @Setter@Getter
+    @Setter
+    @Getter
     private BearerOperation bearerOperation;
 
-    @Setter@Getter
+    @Setter
+    @Getter
     private FrameIpAddress frameIpAddress;
 
-    @Setter@Getter
+    @Setter
+    @Getter
     private IpCanType ipCanType;
-    @Setter@Getter
+    @Setter
+    @Getter
     private GppRatType gppRatType;
-    @Setter@Getter
+    @Setter
+    @Getter
     private RatType ratType;
-    @Setter@Getter
+    @Setter
+    @Getter
     private TerminationCause terminationCause;
-    @Setter@Getter
+    @Setter
+    @Getter
     private UserEquipmentInfo userEquipmentInfo;
-    @Setter@Getter
+    @Setter
+    @Getter
     private QoSInformation qoSInformation;
-    @Setter@Getter
+    @Setter
+    @Getter
     private QoSNegotiation qoSNegotiation;
-    @Setter@Getter
+    @Setter
+    @Getter
     private QoSUpgrade qoSUpgrade;
-    @Setter@Getter
+    @Setter
+    @Getter
     private GppSgsnAddress gppSgsnAddress;
-    @Setter@Getter
+    @Setter
+    @Getter
     private GppUserLocationInfo gppUserLocationInfo;
-    @Setter@Getter
+    @Setter
+    @Getter
     private CalledStationId calledStationId;
-    @Setter@Getter
+    @Setter
+    @Getter
     private BearerUsage bearerUsage;
-    @Setter@Getter
+    @Setter
+    @Getter
     private AccessNetworkChargingAddress accessNetworkChargingAddress;
     @Getter
     private List<AccessNetworkChargingIdentifierGx> accessNetworkChargingIdentifierGx;
-
 
 
     // called when received from socket
@@ -177,14 +202,14 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     }
 
     public void setAccessNetworkChargingIdentifierGx(AccessNetworkChargingIdentifierGx accessNetworkChargingIdentifierGx) {
-        if(this.accessNetworkChargingIdentifierGx==null){
+        if (this.accessNetworkChargingIdentifierGx == null) {
             this.accessNetworkChargingIdentifierGx = new ArrayList<>(2);
         }
         this.accessNetworkChargingIdentifierGx.add(accessNetworkChargingIdentifierGx);
     }
 
     public void setSupportedFeatures(SupportedFeatures supportedFeatures) {
-        if (this.supportedFeatures==null){
+        if (this.supportedFeatures == null) {
             this.supportedFeatures = new ArrayList<>(2);
         }
         this.supportedFeatures.add(supportedFeatures);

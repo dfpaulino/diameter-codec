@@ -27,7 +27,7 @@ public class AvpDecoders {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        int len = header.getAvpLength()-(header.isVendorSpecific() ? 12 : 8);
+        int len = header.getAvpLength() - (header.isVendorSpecific() ? 12 : 8);
         int lastPos = position + header.getAvpLength() + header.getPaddingSize();
         return ReadBytesUtils.readNBytesAsByteArray(buffer, offset, len);
     };
@@ -43,13 +43,13 @@ public class AvpDecoders {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        short addrFamily = (short)( (buffer[offset]&0xff)<<8 |(buffer[offset+1]&0xff));
+        short addrFamily = (short) ((buffer[offset] & 0xff) << 8 | (buffer[offset + 1] & 0xff));
         String ipStr;
-        int pos = offset +2;
+        int pos = offset + 2;
         if (addrFamily == 1) {
 
             //ipv4 are 4 bytes
-            ipStr = (buffer[pos] & 0xff) + "." + (buffer[pos+1] & 0xff) + "." + (buffer[pos+2] & 0xff) + "." + (buffer[pos+3] & 0xff);
+            ipStr = (buffer[pos] & 0xff) + "." + (buffer[pos + 1] & 0xff) + "." + (buffer[pos + 2] & 0xff) + "." + (buffer[pos + 3] & 0xff);
         } else {
             //IPV6 are 16 bytes..this is not correct!!!!
             /*
@@ -58,12 +58,12 @@ public class AvpDecoders {
             Each group is separated from the others by colons (:)
              */
             StringBuilder sb = new StringBuilder();
-            for (int i =0;i<16;i++){
-                sb.append((char)buffer[pos+i]);
+            for (int i = 0; i < 16; i++) {
+                sb.append((char) buffer[pos + i]);
             }
             ipStr = sb.toString();
         }
-        return new Address(addrFamily,ipStr);
+        return new Address(addrFamily, ipStr);
     };
 
 

@@ -11,8 +11,9 @@ public class ReadBytesUtils {
             value |= (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
             i++;
         }
-        return (int)value;
+        return (int) value;
     }
+
     public static long readNBytesAsLong(byte[] buffer, int position, int len) {
 
         long value = 0;

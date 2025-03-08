@@ -28,24 +28,30 @@ Message Format
 public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExchangeRequest> {
 
     // AVP definitions
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginHost originHost;
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginRealm originRealm;
-    @Setter@Getter
+    @Setter
+    @Getter
     private HostIpAddress hostIpAddress;
-    @Setter@Getter
+    @Setter
+    @Getter
     private VendorId vendorId;
-    @Setter@Getter
+    @Setter
+    @Getter
     private ProductName productName;
-    @Setter@Getter
+    @Setter
+    @Getter
     private OriginStateId originStateId;
     @Getter
-    private  List<AuthApplicationId> authApplicationId ;
+    private List<AuthApplicationId> authApplicationId;
     @Getter
-    private  List<SupportedVendorId> supportedVendorId;
+    private List<SupportedVendorId> supportedVendorId;
     @Getter
-    private  List<VendorSpecificApplicationId> vendorSpecificApplicationId;
+    private List<VendorSpecificApplicationId> vendorSpecificApplicationId;
 
     // called when received from socket
     public CapabilitiesExchangeRequest(DiameterPacketHeader header, byte[] rawData) {
@@ -58,20 +64,21 @@ public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExch
     }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
-        if(this.supportedVendorId==null){
-            this.supportedVendorId=new ArrayList<>(2);
+        if (this.supportedVendorId == null) {
+            this.supportedVendorId = new ArrayList<>(2);
         }
         this.supportedVendorId.add(supportedVendorId);
     }
+
     public void setAuthApplicationId(AuthApplicationId authApplicationId) {
-        if(this.authApplicationId==null){
-            this.authApplicationId=new ArrayList<>(2);
+        if (this.authApplicationId == null) {
+            this.authApplicationId = new ArrayList<>(2);
         }
         this.authApplicationId.add(authApplicationId);
     }
 
     public void setVendorSpecificApplicationId(VendorSpecificApplicationId vendorSpecificApplicationId) {
-        if(this.vendorSpecificApplicationId==null) {
+        if (this.vendorSpecificApplicationId == null) {
             this.vendorSpecificApplicationId = new ArrayList<>(2);
         }
         this.vendorSpecificApplicationId.add(vendorSpecificApplicationId);

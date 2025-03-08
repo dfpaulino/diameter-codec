@@ -1,8 +1,8 @@
 package org.example.diameter.avp.common;
 
-import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.utils.ReadBytesUtils;
 
 public class SupportedVendorId extends Avp<Integer> {
     public static int avpCode = 265;

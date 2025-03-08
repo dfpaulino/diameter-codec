@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 public class DiameterPacketDecoder {
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacketDecoder.class);
 
-    public  static <T extends DiameterPacket<?>> T packetDecode(T packet) {
+    public static <T extends DiameterPacket<?>> T packetDecode(T packet) {
         int position = 20;
         while (position < packet.getHeader().getMessageLength()) {
             //decode AVP Header
@@ -22,9 +22,9 @@ public class DiameterPacketDecoder {
             // if supported....else skip and push position for next avp based on avpHeader lengh
             //read Data from AVP
             //create instance of avp eg new OriginHost(headers,buffer,position,)
-            AvpIdToAvpMapper.AvpDefinition avpDefinition =AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
+            AvpIdToAvpMapper.AvpDefinition avpDefinition = AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
                     .getAvpCode());
-            if(avpDefinition!=null) {
+            if (avpDefinition != null) {
                 Avp<?> avp = avpDefinition.avpCreator.createInstance(avpHeaderheader, packet.getBuffer(), position);
                 avp.getData();
                 String methodName = "set" + avp.getClass().getSimpleName();
@@ -41,7 +41,7 @@ public class DiameterPacketDecoder {
                 logger.warn("Unknown AVP ID [{}]", avpHeaderheader.getAvpCode());
             }
 
-            position+=avpHeaderheader.getAvpLength()+ avpHeaderheader.getPaddingSize();
+            position += avpHeaderheader.getAvpLength() + avpHeaderheader.getPaddingSize();
         }
         return packet;
     }

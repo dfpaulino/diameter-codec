@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface AvpRegister {
     public Class<?> constructor();
-    int code() default  0;
+
+    int code() default 0;
 }

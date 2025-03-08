@@ -17,7 +17,7 @@ public abstract class Avp<T> {
         this.buffer = buffer;
         this.position = position;
         // lazy decoding
-        data = this.decode(buffer,position,header);
+        data = this.decode(buffer, position, header);
     }
 
     public Avp(T data) {

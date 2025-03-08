@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpDecoders;
 import org.example.diameter.avp.AvpHeader;
+
 /*
 Supported-Features ::= < AVP header: 628 10415 >
 { Vendor-Id }
@@ -15,11 +16,14 @@ public class SupportedFeatures extends Avp<SupportedFeatures> {
     public static int avpCode = 628;
     public static byte flags = (byte) 0xc0;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private VendorId vendorId;
-    @Getter @Setter
+    @Getter
+    @Setter
     private FeatureListId featureListId;
-    @Getter @Setter
+    @Getter
+    @Setter
     private FeatureList featureList;
 
     public SupportedFeatures(AvpHeader header, byte[] buffer, int position) {

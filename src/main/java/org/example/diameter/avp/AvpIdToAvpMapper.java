@@ -126,8 +126,8 @@ public class AvpIdToAvpMapper {
 
         avpMapper.put(QoSInformation.avpCode, new AvpDefinition(qoSInformationAvpCreator, AvpType.GROUPED));
         avpMapper.put(QoSClassIdentifier.avpCode, new AvpDefinition(qoSClassIdentifierAvpCreator, AvpType.NOT_GROUP));
-        avpMapper.put(QoSNegotiation.avpCode,new AvpDefinition(qoSNegotiationAvpCreator,AvpType.NOT_GROUP));
-        avpMapper.put(QoSUpgrade.avpCode,new AvpDefinition(qoSUpgradeAvpCreator,AvpType.NOT_GROUP));
+        avpMapper.put(QoSNegotiation.avpCode, new AvpDefinition(qoSNegotiationAvpCreator, AvpType.NOT_GROUP));
+        avpMapper.put(QoSUpgrade.avpCode, new AvpDefinition(qoSUpgradeAvpCreator, AvpType.NOT_GROUP));
 
         avpMapper.put(MaxRequestedBandwidthUL.avpCode, new AvpDefinition(maxRequestedBandwidthULAvpCreator, AvpType.NOT_GROUP));
         avpMapper.put(MaxRequestedBandwidthDL.avpCode, new AvpDefinition(maxRequestedBandwidthDLAvpCreator, AvpType.NOT_GROUP));
@@ -153,7 +153,7 @@ public class AvpIdToAvpMapper {
         avpMapper.put(CcRequestType.avpCode, new AvpDefinition(ccRequestTypeAvpCreator, AvpType.NOT_GROUP));
         avpMapper.put(CcRequestNumber.avpCode, new AvpDefinition(ccRequestNumberAvpCreator, AvpType.NOT_GROUP));
 
-        avpMapper.put(NetworkRequestSupport.avpCode,new AvpDefinition(networkRequestSupportAvpCreator,AvpType.NOT_GROUP));
+        avpMapper.put(NetworkRequestSupport.avpCode, new AvpDefinition(networkRequestSupportAvpCreator, AvpType.NOT_GROUP));
         avpMapper.put(CalledStationId.avpCode, new AvpDefinition(calledStationIdAvpCreator, AvpType.NOT_GROUP));
         avpMapper.put(SessionId.avpCode, new AvpDefinition(sessionIdAvpCreator, AvpType.GROUPED));
         avpMapper.put(GppSgsnAddress.avpCode, new AvpDefinition(gppSgsnAddressAvpCreator, AvpType.NOT_GROUP));
