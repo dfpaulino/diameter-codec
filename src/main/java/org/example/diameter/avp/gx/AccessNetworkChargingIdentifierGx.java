@@ -1,13 +1,16 @@
 package org.example.diameter.avp.gx;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.example.diameter.avp.Avp;
+import org.example.diameter.avp.AvpDecoders;
 import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.utils.ReadBytesUtils;
 
 public class AccessNetworkChargingIdentifierGx extends Avp<AccessNetworkChargingIdentifierGx> {
     public static int avpCode = 1022;
     public static byte flags = (byte) 0x80;
-    @Getter
+    @Getter@Setter
     private AccessNetworkChargingIdentifierValue accessNetworkChargingIdentifierValue;
 
     private void setPriorityLevel(AccessNetworkChargingIdentifierValue accessNetworkChargingIdentifierValue) {
@@ -20,6 +23,6 @@ public class AccessNetworkChargingIdentifierGx extends Avp<AccessNetworkCharging
 
     @Override
     public AccessNetworkChargingIdentifierGx decode(byte[] buffer, int position, AvpHeader header) {
-        return null;
+        return (AccessNetworkChargingIdentifierGx)AvpDecoders.GroupedAvpDecoder.decode(this,buffer,position,header);
     }
 }

@@ -31,14 +31,38 @@ class CreditControlRequestTest {
         assertThat(ccr.getCcRequestNumber().getData()).isEqualTo(0);
         assertThat(ccr.getSubscriptionId().get(0).getSubscriptionIdData().getData()).isEqualTo("886987175568");
         assertThat(ccr.getSubscriptionId().get(0).getSubscriptionIdType().getData()).isEqualTo(0);
+        assertThat(ccr.getSupportedFeatures().get(0).getData().getFeatureList().getData()).isEqualTo(11);
+        assertThat(ccr.getSupportedFeatures().get(0).getData().getFeatureListId().getData()).isEqualTo(1);
+        assertThat(ccr.getNetworkRequestSupport().getData()).isEqualTo(0);
+
         byte[] ip = ccr.getFrameIpAddress().getData();
         String ipStr = (ip[0] & 0xff) + "." + (ip[1] & 0xff) + "." + (ip[2] & 0xff) + "." + (ip[3] & 0xff);
         assertThat(ipStr).isEqualTo("192.168.202.29");
-        assertThat(ccr.getSessionId().getData()).isEqualTo("ptsd-5.module-1.TPEPTS01.taiwanmobile.com;1411018761;0;192.168.202.29");
-        assertThat(ccr.getAuthApplicationId().getData()).isEqualTo(16777238);
+
+        assertThat(ccr.getIpCanType().getData()).isEqualTo(0);
+        assertThat(ccr.getRatType().getData()).isEqualTo(1000);
+        assertThat(ccr.getUserEquipmentInfo().getData().getUserEquipmentInfoType().getData()).isEqualTo(0);
+        assertThat(ccr.getUserEquipmentInfo().getData().getUserEquipmentInfoValue().getData()).isEqualTo("3526480578695801");
+
+        assertThat(ccr.getQoSInformation().getMaxRequestedBandwidthDL().getData()).isEqualTo(32000);
+        assertThat(ccr.getQoSInformation().getMaxRequestedBandwidthUL().getData()).isEqualTo(32000);
+        assertThat(ccr.getQoSNegotiation().getData()).isEqualTo(1);
+        assertThat(ccr.getQoSUpgrade().getData()).isEqualTo(1);
+
+        ip = ccr.getGppSgsnAddress().getData();
+        ipStr = (ip[0] & 0xff) + "." + (ip[1] & 0xff) + "." + (ip[2] & 0xff) + "." + (ip[3] & 0xff);
+        assertThat(ipStr).isEqualTo("61.31.43.243");
+        assertThat(ccr.getGppUserLocationInfo().getData()).isEqualTo(HexFormat.of().parseHex("0064f6790001ea6c"));
+        assertThat(ccr.getCalledStationId().getData()).isEqualTo("lte.pub");
+        assertThat(ccr.getBearerUsage().getData()).isEqualTo(0);
+
+        ipStr = ccr.getAccessNetworkChargingAddress().getData().getIp();
+        assertThat(ipStr).isEqualTo("192.168.200.195");
+
+        assertThat(ccr.getAccessNetworkChargingIdentifierGx().get(0).getAccessNetworkChargingIdentifierValue().getData())
+                .isEqualTo(HexFormat.of().parseHex("73000340"));
 
 
-        System.out.println("hello");
     }
 
     private void asertThat() {
