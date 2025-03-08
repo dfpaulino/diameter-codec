@@ -13,7 +13,7 @@ import static org.example.diameter.avp.AvpDecoders.OctectStringUTF8Decoder;
    the AVP Length field.
  */
 public class CalledStationId extends Avp<String> {
-    public static int avpCode = 258;
+    public static int avpCode = 30;
     public static byte flags = 0x40;
 
     public CalledStationId(AvpHeader header, byte[] rawData, int position) {

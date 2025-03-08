@@ -1,6 +1,6 @@
 package org.example.diameter.avp.gx;
 
-import org.example.diameter.Utils.ReadAvpHeader;
+import org.example.diameter.utils.ReadAvpHeader;
 import org.example.diameter.avp.AvpHeader;
 import org.junit.jupiter.api.Test;
 

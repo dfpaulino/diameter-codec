@@ -39,11 +39,11 @@ public interface DiameterPacketHeader {
     int getCommandCode();
 
     //4 bytes
-    int getApplicationId();
+    long getApplicationId();
 
     // 4 bytes
-    int getHopByHop();
+    long getHopByHop();
 
     // 4 bytes
-    int getEnd2End();
+    long getEnd2End();
 }

@@ -5,7 +5,7 @@ import org.example.diameter.avp.AvpDecoders;
 import org.example.diameter.avp.AvpHeader;
 
 public class GppSgsnAddress extends Avp<byte[]> {
-    public static int avpCode = 8;
+    public static int avpCode = 6;
     public static byte flags = (byte) 0x40;
 
     public GppSgsnAddress(AvpHeader header, byte[] buffer, int position) {

@@ -1,4 +1,4 @@
-package org.example.diameter.Utils;
+package org.example.diameter.utils;
 
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.ImmutableAvpHeader;

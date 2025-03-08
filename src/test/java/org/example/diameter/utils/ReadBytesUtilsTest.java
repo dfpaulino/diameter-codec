@@ -1,4 +1,4 @@
-package org.example.diameter.Utils;
+package org.example.diameter.utils;
 
 import org.junit.jupiter.api.Test;
 

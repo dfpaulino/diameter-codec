@@ -1,15 +1,15 @@
-package org.example.diameter.avp.gx;
+package org.example.diameter.avp.common;
 
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 
 import static org.example.diameter.avp.AvpDecoders.Integer32Decoder;
 
-public class NetworkRequestSupport extends Avp<Integer> {
-    public static int avpCode = 1024;
-    public static byte flags = (byte) 0xc0;
+public class FeatureList extends Avp<Integer> {
+    public static int avpCode = 630;
+    public static byte flags = (byte) 0x80;
 
-    public NetworkRequestSupport(AvpHeader header, byte[] buffer, int position) {
+    public FeatureList(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 

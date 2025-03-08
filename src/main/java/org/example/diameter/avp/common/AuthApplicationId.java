@@ -1,9 +1,9 @@
 package org.example.diameter.avp.common;
 
-
-import org.example.diameter.Utils.ReadBytesUtils;
+import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
+
 
 public class AuthApplicationId extends Avp<Integer> {
     public static int avpCode = 258;

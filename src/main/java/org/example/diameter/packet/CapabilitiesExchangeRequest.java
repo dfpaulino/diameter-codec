@@ -1,12 +1,11 @@
 package org.example.diameter.packet;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.common.*;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /*
 Message Format
@@ -28,34 +27,53 @@ Message Format
  */
 public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExchangeRequest> {
 
-    private static Map<Class<?>, Method> classToSetMethod;
     // AVP definitions
-    @Setter
+    @Setter@Getter
     private OriginHost originHost;
-    @Setter
+    @Setter@Getter
     private OriginRealm originRealm;
-    @Setter
+    @Setter@Getter
     private HostIpAddress hostIpAddress;
-    @Setter
+    @Setter@Getter
     private VendorId vendorId;
-    @Setter
+    @Setter@Getter
     private ProductName productName;
-    @Setter
+    @Setter@Getter
     private OriginStateId originStateId;
-    private final List<SupportedVendorId> supportedVendorId = new ArrayList<>();
-    private final List<VendorSpecificApplicationId> vendorSpecificApplicationId = new ArrayList<>();
+    @Getter
+    private  List<AuthApplicationId> authApplicationId ;
+    @Getter
+    private  List<SupportedVendorId> supportedVendorId;
+    @Getter
+    private  List<VendorSpecificApplicationId> vendorSpecificApplicationId;
 
     // called when received from socket
     public CapabilitiesExchangeRequest(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
     }
 
+    @Override
+    public CapabilitiesExchangeRequest decode(DiameterPacketHeader header, byte[] buffer) {
+        return DiameterPacketDecoder.<CapabilitiesExchangeRequest>packetDecode(this);
+    }
+
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
+        if(this.supportedVendorId==null){
+            this.supportedVendorId=new ArrayList<>(2);
+        }
         this.supportedVendorId.add(supportedVendorId);
     }
-
-    public void setSupportedVendorId(List<SupportedVendorId> supportedVendorId) {
-        this.supportedVendorId.addAll(supportedVendorId);
+    public void setAuthApplicationId(AuthApplicationId authApplicationId) {
+        if(this.authApplicationId==null){
+            this.authApplicationId=new ArrayList<>(2);
+        }
+        this.authApplicationId.add(authApplicationId);
     }
 
+    public void setVendorSpecificApplicationId(VendorSpecificApplicationId vendorSpecificApplicationId) {
+        if(this.vendorSpecificApplicationId==null) {
+            this.vendorSpecificApplicationId = new ArrayList<>(2);
+        }
+        this.vendorSpecificApplicationId.add(vendorSpecificApplicationId);
+    }
 }

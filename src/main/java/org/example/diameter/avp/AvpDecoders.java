@@ -1,7 +1,8 @@
 package org.example.diameter.avp;
 
-import org.example.diameter.Utils.ReadAvpHeader;
-import org.example.diameter.Utils.ReadBytesUtils;
+import org.example.diameter.avp.types.Address;
+import org.example.diameter.utils.ReadAvpHeader;
+import org.example.diameter.utils.ReadBytesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,8 @@ public class AvpDecoders {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        int len = header.getAvpLength() - offset;
+        int len = header.getAvpLength()-(header.isVendorSpecific() ? 12 : 8);
+        int lastPos = position + header.getAvpLength() + header.getPaddingSize();
         return ReadBytesUtils.readNBytesAsByteArray(buffer, offset, len);
     };
 
@@ -36,6 +38,33 @@ public class AvpDecoders {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         return ReadBytesUtils.readNBytesAsInt(buffer, offset, 4);
     };
+    // TODO
+    public static AvpDecoder<Address> AddressDecoder = (byte[] buffer, int position, AvpHeader header) -> {
+        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
+        int offset = (header.isVendorSpecific() ? 12 : 8) + position;
+        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
+        short addrFamily = (short)( (buffer[offset]&0xff)<<8 |(buffer[offset+1]&0xff));
+        String ipStr;
+        int pos = offset +2;
+        if (addrFamily == 1) {
+
+            //ipv4 are 4 bytes
+            ipStr = (buffer[pos] & 0xff) + "." + (buffer[pos+1] & 0xff) + "." + (buffer[pos+2] & 0xff) + "." + (buffer[pos+3] & 0xff);
+        } else {
+            //IPV6 are 16 bytes..this is not correct!!!!
+            /*
+            An IPv6 address is 128 bits in length and is written as
+            eight groups of four hexadecimal digits.
+            Each group is separated from the others by colons (:)
+             */
+            StringBuilder sb = new StringBuilder();
+            for (int i =0;i<16;i++){
+                sb.append((char)buffer[pos+i]);
+            }
+            ipStr = sb.toString();
+        }
+        return new Address(addrFamily,ipStr);
+    };
 
 
     public static GroupedAvpDecoder<Avp<?>> GroupedAvpDecoder = (Avp<?> self, byte[] buffer, int position, AvpHeader header) -> {
@@ -43,7 +72,7 @@ public class AvpDecoders {
         // All Avps are multiple of 4 octets...OctectString Avp, avpLen does not reflect padding!!
         int avpLen = header.getAvpLength() + header.getPaddingSize();
         int offset = position + (header.isVendorSpecific() ? 12 : 8);
-        int index = position + offset;
+        int index = offset;
         // loop until we reached the end of the Grouped AVP
         while (index < (position + avpLen)) {
             AvpHeader localAvpheader = ReadAvpHeader.readAvpHeaderFromBytes(buffer, index);
@@ -58,7 +87,6 @@ public class AvpDecoders {
                     method.invoke(self, avp);
                     method.setAccessible(false);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-
                     logger.warn("AVP [{}] seems does not belong to this group... ignoring", avp.getClass().getSimpleName());
                     logger.warn("Exception {}", e);
                 }

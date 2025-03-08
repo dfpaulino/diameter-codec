@@ -9,6 +9,7 @@ public class GppUserLocationInfo extends Avp<byte[]> {
     public static byte flags = (byte) 0xc0;
 
     public GppUserLocationInfo(AvpHeader header, byte[] buffer, int position) {
+
         super(header, buffer, position);
     }
 

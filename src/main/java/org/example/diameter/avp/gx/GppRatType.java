@@ -5,11 +5,11 @@ import org.example.diameter.avp.AvpHeader;
 
 import static org.example.diameter.avp.AvpDecoders.Integer32Decoder;
 
-public class NetworkRequestSupport extends Avp<Integer> {
-    public static int avpCode = 1024;
-    public static byte flags = (byte) 0xc0;
+public class GppRatType extends Avp<Integer> {
+    public static int avpCode = 21;
+    public static byte flags = (byte) 0x80;
 
-    public NetworkRequestSupport(AvpHeader header, byte[] buffer, int position) {
+    public GppRatType(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
