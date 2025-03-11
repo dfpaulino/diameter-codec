@@ -1,10 +1,8 @@
 package org.example.diameter.avp.common;
 
-import org.example.diameter.avp.Avp;
-import org.example.diameter.avp.AvpDecoders;
-import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.*;
 import org.example.diameter.avp.types.Address;
-
+@AvpRegister(avpCode =257,avpBuilderMethod = "byteToAvp")
 public class HostIpAddress extends Avp<Address> {
     public static int avpCode = 257;
     public static byte flags = (byte) 0x40;
@@ -13,9 +11,12 @@ public class HostIpAddress extends Avp<Address> {
         super(header, buffer, position);
     }
 
+    public static AvpBuilder byteToAvp(){
+        return new AvpBuilder((HostIpAddress::new));
+    }
     @Override
     public Address decode(byte[] buffer, int position, AvpHeader header) {
-        return AvpDecoders.AddressDecoder.decode(buffer, position, header);
+        return AvpTypeDecoders.AddressDecoder.decode(buffer, position, header);
     }
 
     int getAvpCode() {

@@ -198,7 +198,7 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
 
     @Override
     public CreditControlRequest decode(DiameterPacketHeader header, byte[] buffer) {
-        return DiameterPacketDecoder.<CreditControlRequest>packetDecode(this);
+        return DiameterPacketDecoder.packetDecode(this);
     }
 
     public void setAccessNetworkChargingIdentifierGx(AccessNetworkChargingIdentifierGx accessNetworkChargingIdentifierGx) {

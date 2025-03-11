@@ -56,7 +56,7 @@ public class EchoServer {
             buffer.flip();
             client.write(buffer);
             buffer.clear();
-            System.out.println("read from client {%s}".formatted(client.getRemoteAddress().toString()));
+            System.out.printf("read from client {%s}%n", client.getRemoteAddress().toString());
         }
     }
 

@@ -16,7 +16,7 @@ class ReadBytesUtilsTest {
     public void read4BytesToInt() {
         byte[] b = {(byte) 0x7c, 0x10, 0x00, (byte) 0xf0};
         int i = ReadBytesUtils.readNBytesAsInt(b, 0, 4);
-        assertThat(i).isEqualTo((int) 2081423600);
+        assertThat(i).isEqualTo(2081423600);
 
     }
 

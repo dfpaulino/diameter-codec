@@ -9,7 +9,7 @@ import java.util.HexFormat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class SubscriptionIdTest {
-    private static byte[] buffer = HexFormat.of().parseHex("000001bb40000028000001c24000000c00000000000001bc40000014383836393837313735353638");
+    private static final byte[] buffer = HexFormat.of().parseHex("000001bb40000028000001c24000000c00000000000001bc40000014383836393837313735353638");
 
     @Test
     public void decode() {

@@ -10,11 +10,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
-public class AvpDecoders {
+public class AvpTypeDecoders {
 
-    private static final Logger logger = LoggerFactory.getLogger(AvpDecoders.class);
+    private static final Logger logger = LoggerFactory.getLogger(AvpTypeDecoders.class);
+    private static final ByteToAvpMapper byteToAvpMapper = ByteToAvpMapper.getInstance();
 
-    public static AvpDecoder<String> OctectStringUTF8Decoder = (byte[] buffer, int position, AvpHeader header) -> {
+    public static AvpTypeDecoder<String> OctectStringUTF8Decoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int headerSize = (header.isVendorSpecific() ? 12 : 8);
         int offset = headerSize + position;
@@ -23,7 +24,7 @@ public class AvpDecoders {
         return new String(buffer, offset, dataLen, StandardCharsets.UTF_8);
     };
 
-    public static AvpDecoder<byte[]> OctetStringDecoder = (byte[] buffer, int position, AvpHeader header) -> {
+    public static AvpTypeDecoder<byte[]> OctetStringDecoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
@@ -32,14 +33,14 @@ public class AvpDecoders {
         return ReadBytesUtils.readNBytesAsByteArray(buffer, offset, len);
     };
 
-    public static AvpDecoder<Integer> Integer32Decoder = (byte[] buffer, int position, AvpHeader header) -> {
+    public static AvpTypeDecoder<Integer> Integer32Decoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         return ReadBytesUtils.readNBytesAsInt(buffer, offset, 4);
     };
     // TODO
-    public static AvpDecoder<Address> AddressDecoder = (byte[] buffer, int position, AvpHeader header) -> {
+    public static AvpTypeDecoder<Address> AddressDecoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         int offset = (header.isVendorSpecific() ? 12 : 8) + position;
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
@@ -76,10 +77,11 @@ public class AvpDecoders {
         // loop until we reached the end of the Grouped AVP
         while (index < (position + avpLen)) {
             AvpHeader localAvpheader = ReadAvpHeader.readAvpHeaderFromBytes(buffer, index);
-            AvpIdToAvpMapper.AvpDefinition avpDefinition = AvpIdToAvpMapper.getAvpMapper()
-                    .get(localAvpheader.getAvpCode());
-            if (null != avpDefinition) {
-                Avp<?> avp = avpDefinition.avpCreator.createInstance(localAvpheader, buffer, index);
+            AvpBuilder avpBuilder = byteToAvpMapper.getAvpBuilderMapper().get(localAvpheader.getAvpCode());
+
+            if (null != avpBuilder) {
+                Avp<?> avp = avpBuilder.builder().createAvp(localAvpheader, buffer, index);
+
                 String callMethod = "set" + avp.getClass().getSimpleName();
                 try {
                     Method method = self.getClass().getDeclaredMethod(callMethod, avp.getClass());
@@ -98,5 +100,4 @@ public class AvpDecoders {
         }
         return self;
     };
-
 }

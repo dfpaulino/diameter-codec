@@ -60,7 +60,7 @@ public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExch
 
     @Override
     public CapabilitiesExchangeRequest decode(DiameterPacketHeader header, byte[] buffer) {
-        return DiameterPacketDecoder.<CapabilitiesExchangeRequest>packetDecode(this);
+        return DiameterPacketDecoder.packetDecode(this);
     }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {

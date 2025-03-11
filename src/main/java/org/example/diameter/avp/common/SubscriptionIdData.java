@@ -1,9 +1,8 @@
 package org.example.diameter.avp.common;
 
-import org.example.diameter.avp.Avp;
-import org.example.diameter.avp.AvpDecoders;
-import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.*;
 
+@AvpRegister(avpCode =444,avpBuilderMethod = "byteToAvp")
 public class SubscriptionIdData extends Avp<String> {
     public static int avpCode = 444;
     public static byte flags = 0x40;
@@ -12,8 +11,11 @@ public class SubscriptionIdData extends Avp<String> {
         super(header, buffer, position);
     }
 
+    public static AvpBuilder byteToAvp(){
+        return new AvpBuilder((SubscriptionIdData::new));
+    }
     @Override
     public String decode(byte[] buffer, int position, AvpHeader header) {
-        return AvpDecoders.OctectStringUTF8Decoder.decode(buffer, position, header);
+        return AvpTypeDecoders.OctectStringUTF8Decoder.decode(buffer, position, header);
     }
 }

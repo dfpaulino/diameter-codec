@@ -2,9 +2,13 @@ package org.example.diameter.avp.common;
 
 
 import org.example.diameter.avp.Avp;
+import org.example.diameter.avp.AvpBuilder;
 import org.example.diameter.avp.AvpHeader;
-import org.example.diameter.utils.ReadBytesUtils;
+import org.example.diameter.avp.AvpRegister;
 
+import static org.example.diameter.avp.AvpTypeDecoders.Integer32Decoder;
+
+@AvpRegister(avpCode =439,avpBuilderMethod = "byteToAvp")
 public class ServiceIdentifier extends Avp<Integer> {
     public static int avpCode = 439;
     public static byte flags = (byte) 0x40;
@@ -13,11 +17,11 @@ public class ServiceIdentifier extends Avp<Integer> {
         super(header, buffer, position);
     }
 
+    public static AvpBuilder byteToAvp(){
+        return new AvpBuilder((ServiceIdentifier::new));
+    }
     @Override
     public Integer decode(byte[] buffer, int position, AvpHeader header) {
-        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        int offset = (header.isVendorSpecific() ? 12 : 8) + position;
-        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
-        return ReadBytesUtils.readNBytesAsInt(buffer, offset, 4);
+        return Integer32Decoder.decode(buffer, position, header);
     }
 }

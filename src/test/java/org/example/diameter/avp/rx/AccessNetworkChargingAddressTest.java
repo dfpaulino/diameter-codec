@@ -11,7 +11,7 @@ import java.util.HexFormat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class AccessNetworkChargingAddressTest {
-    private byte[] buffer = HexFormat.of().parseHex("000001f5c0000012000028af0001c0a8c8c30000");
+    private final byte[] buffer = HexFormat.of().parseHex("000001f5c0000012000028af0001c0a8c8c30000");
 
     @Test
     void decode() {

@@ -8,7 +8,7 @@ public class ReadBytesUtils {
         long value = 0;
         int i = 0;
         while (i < len) {
-            value |= (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
+            value |= (long) (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
             i++;
         }
         return (int) value;
@@ -19,7 +19,7 @@ public class ReadBytesUtils {
         long value = 0;
         int i = 0;
         while (i < len) {
-            value |= (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
+            value |= (long) (buffer[position + i] & 0xFF) << (8 * (len - i - 1));
             i++;
         }
         return value;
@@ -32,7 +32,7 @@ public class ReadBytesUtils {
     }
 
     public static byte readByteAsByte(byte[] buffer, int position) {
-        return (byte) buffer[position];
+        return buffer[position];
     }
 
 }

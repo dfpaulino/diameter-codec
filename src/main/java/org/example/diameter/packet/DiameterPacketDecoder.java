@@ -1,8 +1,9 @@
 package org.example.diameter.packet;
 
 import org.example.diameter.avp.Avp;
+import org.example.diameter.avp.AvpBuilder;
 import org.example.diameter.avp.AvpHeader;
-import org.example.diameter.avp.AvpIdToAvpMapper;
+import org.example.diameter.avp.ByteToAvpMapper;
 import org.example.diameter.utils.ReadAvpHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import java.lang.reflect.Method;
 
 public class DiameterPacketDecoder {
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacketDecoder.class);
+    private static final ByteToAvpMapper BYTE_TO_AVP_MAPPER = ByteToAvpMapper.getInstance();
 
     public static <T extends DiameterPacket<?>> T packetDecode(T packet) {
         int position = 20;
@@ -22,14 +24,11 @@ public class DiameterPacketDecoder {
             // if supported....else skip and push position for next avp based on avpHeader lengh
             //read Data from AVP
             //create instance of avp eg new OriginHost(headers,buffer,position,)
-            AvpIdToAvpMapper.AvpDefinition avpDefinition = AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
-                    .getAvpCode());
-            if (avpDefinition != null) {
-                Avp<?> avp = avpDefinition.avpCreator.createInstance(avpHeaderheader, packet.getBuffer(), position);
-                avp.getData();
+            AvpBuilder avpBuilder = BYTE_TO_AVP_MAPPER.getAvpBuilderMapper().get(avpHeaderheader.getAvpCode());
+            if (avpBuilder != null) {
+                Avp<?> avp = avpBuilder.builder().createAvp(avpHeaderheader, packet.getBuffer(), position);
                 String methodName = "set" + avp.getClass().getSimpleName();
                 try {
-                    //Method method = this.getClass().getDeclaredMethod(methodName, avp.getClass());
                     Method method = packet.getClass().getDeclaredMethod(methodName, avp.getClass());
                     method.invoke(packet, avp);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

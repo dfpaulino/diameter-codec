@@ -1,15 +1,8 @@
 package org.example.diameter.packet;
 
 import lombok.Getter;
-import org.example.diameter.avp.Avp;
-import org.example.diameter.avp.AvpHeader;
-import org.example.diameter.avp.AvpIdToAvpMapper;
-import org.example.diameter.utils.ReadAvpHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /*
 .  Diameter Header
@@ -71,39 +64,6 @@ public abstract class DiameterPacket<T> {
     }
 
     public abstract T decode(DiameterPacketHeader header, byte[] buffer);
-
-    public void decode() {
-        byte[] bytes = this.getBuffer();
-        // skip header
-        int position = 20;
-        while (position < this.getHeader().getMessageLength()) {
-            //decode AVP Header
-            AvpHeader avpHeaderheader = ReadAvpHeader.readAvpHeaderFromBytes(buffer, position);
-            // what AVP is this?
-            // if supported....else skip and push position for next avp based on avpHeader lengh
-            //read Data from AVP
-            //create instance of avp eg new OriginHost(headers,buffer,position,)
-            AvpIdToAvpMapper.AvpDefinition avpDefinition = AvpIdToAvpMapper.getAvpMapper().get(avpHeaderheader
-                    .getAvpCode());
-            if (avpDefinition != null) {
-                Avp<?> avp = avpDefinition.avpCreator.createInstance(avpHeaderheader, buffer, position);
-                String methodName = "set" + avp.getClass().getSimpleName();
-                try {
-                    //Method method = this.getClass().getDeclaredMethod(methodName, avp.getClass());
-                    Method method = this.getClass().getDeclaredMethod(methodName, avp.getClass());
-                    method.invoke(this, avp);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    logger.warn("AVP [{}] seems does not belong to this group... ignoring", avp.getClass().getSimpleName());
-                    logger.warn("Exception {}", e);
-                    //throw new RuntimeException(e);
-                }
-            } else {
-                logger.warn("Unknown AVP ID [{}]", avpHeaderheader.getAvpCode());
-            }
-
-            position += avpHeaderheader.getAvpLength() + avpHeaderheader.getPaddingSize();
-        }
-    }
 
     private byte[] encode() {
         return new byte[1024];

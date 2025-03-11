@@ -1,9 +1,8 @@
 package org.example.diameter.avp.gx;
 
-import org.example.diameter.avp.Avp;
-import org.example.diameter.avp.AvpDecoders;
-import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.*;
 
+@AvpRegister(avpCode =1040,avpBuilderMethod = "byteToAvp")
 public class ApnAggregateMaxBitrateDL extends Avp<Integer> {
     public static int avpCode = 1040;
     public static byte flags = (byte) 0x80;
@@ -12,8 +11,11 @@ public class ApnAggregateMaxBitrateDL extends Avp<Integer> {
         super(header, buffer, position);
     }
 
+    public static AvpBuilder byteToAvp(){
+        return new AvpBuilder(ApnAggregateMaxBitrateDL::new);
+    }
     @Override
     public Integer decode(byte[] buffer, int position, AvpHeader header) {
-        return AvpDecoders.Integer32Decoder.decode(buffer, position, header);
+        return AvpTypeDecoders.Integer32Decoder.decode(buffer, position, header);
     }
 }

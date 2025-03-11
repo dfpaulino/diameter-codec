@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface AvpRegister {
-    public Class<?> constructor();
-
-    int code() default 0;
+    String avpBuilderMethod() default "";
+    int avpCode() default 0;
 }

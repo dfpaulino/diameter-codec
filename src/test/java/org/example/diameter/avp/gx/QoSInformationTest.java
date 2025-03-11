@@ -9,7 +9,7 @@ import java.util.HexFormat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class QoSInformationTest {
-    private byte[] buffer = HexFormat.of().parseHex("000003f8c000002c000028af00000204c0000010000028af00007d0000000203c0000010000028af00007d00");
+    private final byte[] buffer = HexFormat.of().parseHex("000003f8c000002c000028af00000204c0000010000028af00007d0000000203c0000010000028af00007d00");
 
     @Test
     void decode() {

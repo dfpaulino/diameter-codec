@@ -1,6 +1,6 @@
 package org.example.diameter.avp;
 
 @FunctionalInterface
-public interface AvpDecoder<T> {
+public interface AvpTypeDecoder<T> {
     T decode(byte[] buffer, int position, AvpHeader avpHeader);
 }

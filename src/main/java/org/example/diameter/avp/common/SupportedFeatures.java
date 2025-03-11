@@ -2,9 +2,7 @@ package org.example.diameter.avp.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.diameter.avp.Avp;
-import org.example.diameter.avp.AvpDecoders;
-import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.*;
 
 /*
 Supported-Features ::= < AVP header: 628 10415 >
@@ -12,6 +10,7 @@ Supported-Features ::= < AVP header: 628 10415 >
 { Feature-List-ID }
 { Feature-List }
  */
+@AvpRegister(avpCode =628,avpBuilderMethod = "byteToAvp")
 public class SupportedFeatures extends Avp<SupportedFeatures> {
     public static int avpCode = 628;
     public static byte flags = (byte) 0xc0;
@@ -30,8 +29,11 @@ public class SupportedFeatures extends Avp<SupportedFeatures> {
         super(header, buffer, position);
     }
 
+    public static AvpBuilder byteToAvp(){
+        return new AvpBuilder((SupportedFeatures::new));
+    }
     @Override
     public SupportedFeatures decode(byte[] buffer, int position, AvpHeader header) {
-        return (SupportedFeatures) AvpDecoders.GroupedAvpDecoder.decode(this, buffer, position, header);
+        return (SupportedFeatures) AvpTypeDecoders.GroupedAvpDecoder.decode(this, buffer, position, header);
     }
 }
