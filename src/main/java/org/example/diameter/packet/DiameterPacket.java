@@ -35,13 +35,13 @@ public abstract class DiameterPacket<T> {
     // The whole data as byte[]
     private byte[] buffer;
     // object data (decoded format)
-    @Getter
     private T data;
 
     public DiameterPacket(DiameterPacketHeader header, byte[] buffer) {
         this.header = header;
         this.buffer = buffer;
-        this.data = this.decode(header, buffer);
+        // lazy decoding
+        //this.data = this.decode(header, buffer);
     }
 
     public DiameterPacket(DiameterPacketHeader header, T data) {

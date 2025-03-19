@@ -16,15 +16,18 @@ class SubscriptionIdTest {
         AvpHeader header = ReadAvpHeader.readAvpHeaderFromBytes(buffer, 0);
         SubscriptionId subscriptionId = new SubscriptionId(header, buffer, 0);
         // i return myself
-        SubscriptionId subscriptionId1 = subscriptionId.getData();
-        assertThat(subscriptionId).isEqualTo(subscriptionId1);
 
         assertThat(subscriptionId.getHeader().getPaddingSize()).isEqualTo(0);
         assertThat(subscriptionId.getHeader().getAvpLength()).isEqualTo(40);
         assertThat(subscriptionId.getHeader().getAvpFlags()).isEqualTo((byte) 0x40);
         assertThat(subscriptionId.getHeader().isVendorSpecific()).isFalse();
 
-        assertThat(subscriptionId.getSubscriptionIdType().getData()).isEqualTo(0);
-        assertThat(subscriptionId.getSubscriptionIdData().getData()).isEqualTo("886987175568");
+        assertThat(subscriptionId.getData().getSubscriptionIdType().getData()).isEqualTo(0);
+        assertThat(subscriptionId.getData().getSubscriptionIdData().getData()).isEqualTo("886987175568");
+    }
+
+    public void ctor(){
+        SubscriptionId subscriptionId = new SubscriptionId();
+        subscriptionId.setSubscriptionIdData(new SubscriptionIdData("hello"));
     }
 }

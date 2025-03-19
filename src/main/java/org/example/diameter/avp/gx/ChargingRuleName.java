@@ -1,22 +1,23 @@
-package org.example.diameter.avp.common;
+package org.example.diameter.avp.gx;
 
 import org.example.diameter.avp.*;
 
-@AvpRegister(avpCode =444,avpBuilderMethod = "byteToAvp")
-public class SubscriptionIdData extends Avp<String> {
-    public static int avpCode = 444;
+
+@AvpRegister(avpCode =1005,avpBuilderMethod = "byteToAvp")
+public class ChargingRuleName extends Avp<String> {
+    public static int avpCode = 1005;
     public static byte flags = 0x40;
 
-    public SubscriptionIdData(AvpHeader header, byte[] buffer, int position) {
+    public ChargingRuleName(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
-    public SubscriptionIdData(String data) {
+    public ChargingRuleName(String data) {
         super(data);
     }
 
     public static AvpBuilder byteToAvp(){
-        return new AvpBuilder((SubscriptionIdData::new));
+        return new AvpBuilder((ChargingRuleName::new));
     }
     @Override
     public String decode(byte[] buffer, int position, AvpHeader header) {

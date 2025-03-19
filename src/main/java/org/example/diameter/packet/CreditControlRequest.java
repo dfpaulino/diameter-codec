@@ -53,7 +53,7 @@ X[ AN-GW-Status ]
 X[ 3GPP-SGSN-MCC-MNC ]
 [ 3GPP-SGSN-Address ]
 X[ 3GPP-SGSN-Ipv6-Address ]
-X[ 3GPP-GGSN-Address ]
+[ 3GPP-GGSN-Address ]
 X[ 3GPP-GGSN-Ipv6-Address ]
 X[ 3GPP-Selection-Mode ]
 X[ RAI ]
@@ -68,8 +68,8 @@ X[ 3GPP-Charging-Characteristics ]
 [ Called-Station-Id ]
 X[ PDN-Connection-ID ]
 [ Bearer-Usage ]
-X[ Online ]
-X[ Offline ]
+[ Online ]
+[ Offline ]
 X*[ TFT-Packet-Filter-Information ]
 X*[ Charging-Rule-Report ]
 X*[ Application-Detection-Information ]
@@ -177,6 +177,9 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     private GppSgsnAddress gppSgsnAddress;
     @Setter
     @Getter
+    private GppGgsnAddress gppGgsnAddress;
+    @Setter
+    @Getter
     private GppUserLocationInfo gppUserLocationInfo;
     @Setter
     @Getter
@@ -189,12 +192,20 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     private AccessNetworkChargingAddress accessNetworkChargingAddress;
     @Getter
     private List<AccessNetworkChargingIdentifierGx> accessNetworkChargingIdentifierGx;
+    @Setter
+    @Getter
+    private Online online;
+    @Setter
+    @Getter
+    private Offline offline;
 
 
     // called when received from socket
     public CreditControlRequest(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
     }
+
+
 
     @Override
     public CreditControlRequest decode(DiameterPacketHeader header, byte[] buffer) {

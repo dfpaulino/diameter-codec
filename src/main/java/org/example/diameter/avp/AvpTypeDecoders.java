@@ -1,6 +1,7 @@
 package org.example.diameter.avp;
 
 import org.example.diameter.avp.types.Address;
+import org.example.diameter.avp.types.Time;
 import org.example.diameter.utils.ReadAvpHeader;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ public class AvpTypeDecoders {
 
     private static final Logger logger = LoggerFactory.getLogger(AvpTypeDecoders.class);
     private static final ByteToAvpMapper byteToAvpMapper = ByteToAvpMapper.getInstance();
+    private static final long SEC_1900_1970 = 2208988800L;
 
     public static AvpTypeDecoder<String> OctectStringUTF8Decoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
@@ -39,6 +41,14 @@ public class AvpTypeDecoders {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
         return ReadBytesUtils.readNBytesAsInt(buffer, offset, 4);
     };
+
+    public static AvpTypeDecoder<Time> ntpTimeDecoder = (byte[] buffer, int position, AvpHeader header) -> {
+        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
+        int offset = (header.isVendorSpecific() ? 12 : 8) + position;
+        // 1 skip header ..verify if vendor specific..then convert getdata and convert to String
+        return new Time(ReadBytesUtils.readNBytesAsByteArray(buffer, offset, 4));
+    };
+
     // TODO
     public static AvpTypeDecoder<Address> AddressDecoder = (byte[] buffer, int position, AvpHeader header) -> {
         // 1 skip header ..verify if vendor specific..then convert getdata and convert to String

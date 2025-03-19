@@ -2,17 +2,17 @@ package org.example.diameter.avp.common;
 
 import org.example.diameter.avp.*;
 
-@AvpRegister(avpCode =6,avpBuilderMethod = "byteToAvp")
-public class GppSgsnAddress extends Avp<byte[]> {
-    public static int avpCode = 6;
+@AvpRegister(avpCode =7,avpBuilderMethod = "byteToAvp")
+public class GppGgsnAddress extends Avp<byte[]> {
+    public static int avpCode = 7;
     public static byte flags = (byte) 0x80;
 
-    public GppSgsnAddress(AvpHeader header, byte[] buffer, int position) {
+    public GppGgsnAddress(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
     public static AvpBuilder byteToAvp(){
-        return new AvpBuilder((GppSgsnAddress::new));
+        return new AvpBuilder((GppGgsnAddress::new));
     }
 
     @Override
