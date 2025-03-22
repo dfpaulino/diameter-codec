@@ -25,9 +25,6 @@ public abstract class Avp<T> {
         this.position = 0;
     }
 
-    public boolean isDecoded(){
-        return data != null;
-    }
 
     public T getData() {
         if (null == this.data && header!=null && buffer.length>0) {
@@ -37,7 +34,13 @@ public abstract class Avp<T> {
     }
 
     public abstract T decode(byte[] buffer, int position, AvpHeader header);
+    public  byte[] encode(){
+        return new byte[0];
+    }
 
+    /*
+       Override this method for Grouped AVP's
+     */
     public  T returnContent() {return data;};
 
 }

@@ -1,5 +1,8 @@
 package org.example.diameter.avp.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum EventTriggerType {
     SGSN_CHANGE(0),
     QOS_CHANGE(1),
@@ -18,14 +21,22 @@ public enum EventTriggerType {
     UE_LOCAL_IP_ADDRESS_CHANGE(43),
     IGNORE(100);
 
-    private int type;
+    private static Map<Integer,EventTriggerType> map = new HashMap<>();
+    private final int type;
+
 
     EventTriggerType(int type) {
         this.type = type;
     }
 
     public static EventTriggerType of(int type){
-            return IGNORE;
+            return map.get(type);
+    }
+
+    static {
+        for(EventTriggerType e:EventTriggerType.values()){
+            map.put(e.type,e);
+        }
 
     }
 }

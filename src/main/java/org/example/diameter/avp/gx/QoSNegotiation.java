@@ -4,6 +4,9 @@ import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpBuilder;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.AvpRegister;
+import org.example.diameter.avp.enums.VendorId;
+import org.example.diameter.utils.EncodeAvp;
+import org.example.diameter.utils.EncodeUtils;
 
 import static org.example.diameter.avp.AvpTypeDecoders.Integer32Decoder;
 @AvpRegister(avpCode = 1029,avpBuilderMethod = "byteToAvp")
@@ -15,6 +18,10 @@ public class QoSNegotiation extends Avp<Integer> {
         super(header, buffer, position);
     }
 
+    public QoSNegotiation(Integer data) {
+        super(data);
+    }
+
     public static AvpBuilder byteToAvp(){
         return new AvpBuilder(QoSNegotiation::new);
     }
@@ -22,5 +29,11 @@ public class QoSNegotiation extends Avp<Integer> {
     @Override
     public Integer decode(byte[] buffer, int position, AvpHeader header) {
         return Integer32Decoder.decode(buffer, position, header);
+    }
+
+    @Override
+    public byte[] encode() {
+        return EncodeAvp.encode(avpCode,flags,4, VendorId.GPP.getValue(),
+                EncodeUtils.encodeIntTo4Bytes(this.getData()));
     }
 }

@@ -46,7 +46,7 @@ class ChargingRuleInstallTest {
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getServiceIdentifier().getData()).isEqualTo(52);
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getRatingGroup().getData()).isEqualTo(2);
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getQoSInformation().getData()).isNotNull();
-        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getMeteringMethod().getData()).isEqualTo(1);
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getMeteringMethod().getData().getType()).isEqualTo(1);
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getPrecedence().getData()).isEqualTo(1);
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getOffline().getData()).isEqualTo(0);
 
