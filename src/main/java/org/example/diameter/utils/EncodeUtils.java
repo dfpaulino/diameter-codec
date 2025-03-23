@@ -1,5 +1,7 @@
 package org.example.diameter.utils;
 
+import java.nio.charset.StandardCharsets;
+
 public class EncodeUtils {
 
     /*
@@ -23,10 +25,19 @@ public class EncodeUtils {
         return bytes;
     }
     /*
-    silly... justo to avoid scattering encoders utilities
+    OctetString must be aware of padding.
+    encoded bytes must be aligned on the 32 bits (4 bytes) boundary.
      */
-    public static byte[] encodeStringToBytes(String s) {
-        return s.getBytes();
+    public static byte[] OctectStringUTF8ToBytes(String s) {
+        int padding = (s.length()%4==0?0:(4-s.length()%4));
+
+        byte[] bytes = new byte[s.length() + padding];
+        System.arraycopy(s.getBytes(StandardCharsets.UTF_8),0,bytes,0,s.length());
+        // add padding for te remaining bytes
+        for (int i=s.length();i < bytes.length;i++){
+            bytes[i] = 0x00;
+        }
+        return bytes;
     }
 
     public static byte[] encodeNtpTimeToBytes(String s) {

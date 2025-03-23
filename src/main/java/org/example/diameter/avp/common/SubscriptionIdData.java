@@ -1,6 +1,8 @@
 package org.example.diameter.avp.common;
 
 import org.example.diameter.avp.*;
+import org.example.diameter.utils.EncodeAvp;
+import org.example.diameter.utils.EncodeUtils;
 
 @AvpRegister(avpCode =444,avpBuilderMethod = "byteToAvp")
 public class SubscriptionIdData extends Avp<String> {
@@ -21,5 +23,10 @@ public class SubscriptionIdData extends Avp<String> {
     @Override
     public String decode(byte[] buffer, int position, AvpHeader header) {
         return AvpTypeDecoders.OctectStringUTF8Decoder.decode(buffer, position, header);
+    }
+    @Override
+    public byte[] encode() {
+        return EncodeAvp.encode(avpCode,flags,this.getData().length(),0,
+                EncodeUtils.OctectStringUTF8ToBytes(this.getData()));
     }
 }

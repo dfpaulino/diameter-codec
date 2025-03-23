@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HexFormat;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class EncodeUtilsTest {
 
@@ -22,4 +21,26 @@ class EncodeUtilsTest {
         byte[] buffer =EncodeUtils.encodeIntToNBytes(value,3);
         assertThat(HexFormat.of().formatHex(buffer)).isEqualTo("000400");
     }
+
+    @Test
+    public void encodeOctetString_whenSizeBoundedTo4Octets(){
+        String s = "ABCDefgH";
+        byte[] encodedBytes = EncodeUtils.OctectStringUTF8ToBytes(s);
+        assertThat(encodedBytes.length).isEqualTo(s.length());
+    }
+
+    @Test
+    public void encodeOctetString_whenSizeNotBoundedTo4Octets(){
+        String s = "ABCDefgHI";
+        byte[] encodedBytes = EncodeUtils.OctectStringUTF8ToBytes(s);
+        assertThat(encodedBytes.length).isEqualTo(s.length()+3);
+    }
+
+    @Test
+    public void encodeOctetString_whenSizeNotBoundedTo4Octets_2(){
+        String s = "ABCDefgHIJ";
+        byte[] encodedBytes = EncodeUtils.OctectStringUTF8ToBytes(s);
+        assertThat(encodedBytes.length).isEqualTo(s.length()+2);
+    }
+
 }

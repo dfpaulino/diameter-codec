@@ -4,6 +4,7 @@ import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpBuilder;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.AvpRegister;
+import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.utils.EncodeAvp;
 import org.example.diameter.utils.EncodeUtils;
 
@@ -30,7 +31,7 @@ public class FeatureListId extends Avp<Integer> {
     }
     @Override
     public byte[] encode() {
-        return EncodeAvp.encode(avpCode,flags,4,0,
+        return EncodeAvp.encode(avpCode,flags,4, VendorId.GPP.getValue(),
                 EncodeUtils.encodeIntTo4Bytes(this.getData()));
     }
 }

@@ -19,6 +19,5 @@ class UserEquipmentInfoTest {
         assertThat(header.getAvpFlags()).isEqualTo(UserEquipmentInfo.flags);
         assertThat(userEquipmentInfo.getData().getUserEquipmentInfoType().getData()).isEqualTo(0);
         assertThat(userEquipmentInfo.getData().getUserEquipmentInfoValue().getData()).isEqualTo("3526480578695801");
-
     }
 }
