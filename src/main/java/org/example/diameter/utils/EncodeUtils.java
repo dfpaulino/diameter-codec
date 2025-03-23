@@ -40,10 +40,8 @@ public class EncodeUtils {
         return bytes;
     }
 
-    public static byte[] encodeNtpTimeToBytes(String s) {
-        return s.getBytes();
-    }
-    public static byte[] encodeAddressToBytes(String s) {
-        return s.getBytes();
+
+    public static byte[] encodeAddressToBytes(short ipFamily,String ip) {
+        return new byte[0];
     }
 }
