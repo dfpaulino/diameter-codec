@@ -1,6 +1,11 @@
 package org.example.diameter.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HexFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EncodeUtils {
 
@@ -38,6 +43,57 @@ public class EncodeUtils {
             bytes[i] = 0x00;
         }
         return bytes;
+    }
+
+    public static byte[] AddressToBytes(String ip, int family) {
+
+        if(family==1) {
+            //ip v4
+            byte[] buffer = new byte[2+4+2];
+
+            List<Integer> ipBytes = Arrays.stream(ip.split("\\.")).map(Integer::valueOf).toList();
+            buffer[0]=0x00;
+            buffer[1]=0x01;
+            for(int i = 0;i<4;i++){
+                buffer[2+i]= (byte)(ipBytes.get(i)&0xff);
+            }
+            //padding
+            buffer[6]=0x00;
+            buffer[7]=0x00;
+
+            int padding = 2;
+            return buffer;
+        }else {
+            //ip v6
+            byte[] buffer = new byte[2+16+2];
+            List<String> ipStr = Arrays.stream(ip.split(":")).toList();
+
+            buffer[0]=0x00;
+            buffer[1]=0x02;
+            for(int i = 0;i< ipStr.size();i++){
+                String s;
+                switch (ipStr.get(i).length()) {
+                    case 0:
+                        s = "0000";break;
+                    case 1:
+                        s = "000"+ipStr.get(i);break;
+                    case 2:
+                        s = "00"+ipStr.get(i);break;
+                    case 3:
+                        s = "0"+ipStr.get(i);break;
+                    default:
+                        s = ipStr.get(i);
+                }
+                byte[] bytesAux = HexFormat.of().parseHex(s);
+                buffer[2+i*2]=bytesAux[0];
+                buffer[2+i*2 +1]=bytesAux[1];
+            }
+            //padding
+            buffer[18]=0x00;
+            buffer[19]=0x00;
+            return buffer;
+        }
+
     }
 
 
