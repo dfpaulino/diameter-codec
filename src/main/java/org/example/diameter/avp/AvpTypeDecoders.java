@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.HexFormat;
 
 public class AvpTypeDecoders {
 
@@ -70,7 +71,11 @@ public class AvpTypeDecoders {
              */
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 16; i++) {
-                sb.append((char) buffer[pos + i]);
+                if(i%2==0 && i>0){
+                    sb.append(":");
+                }
+                sb.append((HexFormat.of().toHexDigits(buffer[pos+i])));
+
             }
             ipStr = sb.toString();
         }

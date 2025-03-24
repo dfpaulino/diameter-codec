@@ -63,7 +63,7 @@ class AccessNetworkChargingAddressTest {
         assertThat(header.getPaddingSize()).isEqualTo(2);
 
         assertThat(address.getFamily()).isEqualTo((short) 2);
-        //assertThat(address.getIp()).isEqualTo("2001:0db8:3333:4444:5555:6666:7777:8888");
+        assertThat(address.getIp()).isEqualTo("2001:0db8:3333:4444:5555:6666:7777:8888");
     }
 
 
