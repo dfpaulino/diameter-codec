@@ -1,5 +1,7 @@
 package org.example.diameter.utils;
 
+import org.example.diameter.avp.Avp;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,9 +40,27 @@ public class EncodeUtils {
 
         byte[] bytes = new byte[s.length() + padding];
         System.arraycopy(s.getBytes(StandardCharsets.UTF_8),0,bytes,0,s.length());
-        // add padding for te remaining bytes
+        // add padding for the remaining bytes
         for (int i=s.length();i < bytes.length;i++){
             bytes[i] = 0x00;
+            // this should not be needed as JVM inits the buffer with 0
+        }
+        return bytes;
+    }
+
+    /*
+    OctetString must be aware of padding.
+    encoded bytes must be aligned on the 32 bits (4 bytes) boundary.
+     */
+    public static byte[] OctectStringToBytes(byte[] b) {
+        int padding = (b.length%4==0?0:(4-b.length%4));
+
+        byte[] bytes = new byte[b.length + padding];
+        System.arraycopy(b,0,bytes,0,b.length);
+        // add padding for the remaining bytes
+        for (int i=b.length;i < bytes.length;i++){
+            bytes[i] = 0x00;
+            // this should not be needed as JVM inits the buffer with 0
         }
         return bytes;
     }
@@ -64,26 +84,20 @@ public class EncodeUtils {
             int padding = 2;
             return buffer;
         }else {
-            //ip v6
+            //ip v6 2 bytes for family, 16 bytes for IP + 2 bytes for padding
+            //ip format validation must be on ctor
             byte[] buffer = new byte[2+16+2];
             List<String> ipStr = Arrays.stream(ip.split(":")).toList();
-
             buffer[0]=0x00;
             buffer[1]=0x02;
             for(int i = 0;i< ipStr.size();i++){
-                String s;
-                switch (ipStr.get(i).length()) {
-                    case 0:
-                        s = "0000";break;
-                    case 1:
-                        s = "000"+ipStr.get(i);break;
-                    case 2:
-                        s = "00"+ipStr.get(i);break;
-                    case 3:
-                        s = "0"+ipStr.get(i);break;
-                    default:
-                        s = ipStr.get(i);
-                }
+                String s = switch (ipStr.get(i).length()) {
+                    case 0 -> "0000";
+                    case 1 -> "000" + ipStr.get(i);
+                    case 2 -> "00" + ipStr.get(i);
+                    case 3 -> "0" + ipStr.get(i);
+                    default -> ipStr.get(i);
+                };
                 byte[] bytesAux = HexFormat.of().parseHex(s);
                 buffer[2+i*2]=bytesAux[0];
                 buffer[2+i*2 +1]=bytesAux[1];
@@ -96,8 +110,4 @@ public class EncodeUtils {
 
     }
 
-
-    public static byte[] encodeAddressToBytes(short ipFamily,String ip) {
-        return new byte[0];
-    }
 }

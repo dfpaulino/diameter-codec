@@ -59,11 +59,9 @@ public class AvpTypeDecoders {
         String ipStr;
         int pos = offset + 2;
         if (addrFamily == 1) {
-
             //ipv4 are 4 bytes
             ipStr = (buffer[pos] & 0xff) + "." + (buffer[pos + 1] & 0xff) + "." + (buffer[pos + 2] & 0xff) + "." + (buffer[pos + 3] & 0xff);
         } else {
-            //IPV6 are 16 bytes..this is not correct!!!!
             /*
             An IPv6 address is 128 bits in length and is written as
             eight groups of four hexadecimal digits.
@@ -75,7 +73,6 @@ public class AvpTypeDecoders {
                     sb.append(":");
                 }
                 sb.append((HexFormat.of().toHexDigits(buffer[pos+i])));
-
             }
             ipStr = sb.toString();
         }
