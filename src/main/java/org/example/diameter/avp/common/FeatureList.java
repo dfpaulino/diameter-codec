@@ -9,8 +9,10 @@ import org.example.diameter.utils.EncodeAvp;
 import org.example.diameter.utils.EncodeUtils;
 
 import static org.example.diameter.avp.AvpTypeDecoders.Integer32Decoder;
+import static org.example.diameter.avp.AvpTypeDecoders.OctetStringDecoder;
+
 @AvpRegister(avpCode =630,avpBuilderMethod = "byteToAvp")
-public class FeatureList extends Avp<Integer> {
+public class FeatureList extends Avp<byte[]> {
     public static int avpCode = 630;
     public static byte flags = (byte) 0x80;
 
@@ -18,7 +20,7 @@ public class FeatureList extends Avp<Integer> {
         super(header, buffer, position);
     }
 
-    public FeatureList(Integer data) {
+    public FeatureList(byte[] data) {
         super(data);
     }
 
@@ -26,12 +28,12 @@ public class FeatureList extends Avp<Integer> {
         return new AvpBuilder((FeatureList::new));
     }
     @Override
-    public Integer decode(byte[] buffer, int position, AvpHeader header) {
-        return Integer32Decoder.decode(buffer, position, header);
+    public byte[] decode(byte[] buffer, int position, AvpHeader header) {
+        return OctetStringDecoder.decode(buffer, position, header);
     }
     @Override
     public byte[] encode() {
         return EncodeAvp.encode(avpCode,flags,4, VendorId.GPP.getValue(),
-                EncodeUtils.encodeIntTo4Bytes(this.getData()));
+                this.getData());
     }
 }

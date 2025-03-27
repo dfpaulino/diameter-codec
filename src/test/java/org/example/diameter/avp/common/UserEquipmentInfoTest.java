@@ -20,4 +20,12 @@ class UserEquipmentInfoTest {
         assertThat(userEquipmentInfo.getData().getUserEquipmentInfoType().getData()).isEqualTo(0);
         assertThat(userEquipmentInfo.getData().getUserEquipmentInfoValue().getData()).isEqualTo("3526480578695801");
     }
+
+    @Test
+    public void encode() {
+        UserEquipmentInfo userEquipmentInfo = new UserEquipmentInfo(new UserEquipmentInfoType(0),
+                new UserEquipmentInfoValue("3526480578695801"));
+        byte[] bytes = userEquipmentInfo.encode();
+        assertThat(bytes).isEqualTo(buffer);
+    }
 }

@@ -77,8 +77,10 @@ public class EncodeAvp {
                 try {
                     field.setAccessible(true);
                     Avp<?> avp = (Avp<?>) (field.get(self));
+                    if(null != avp){
+                        innerAvpsBytes.add(avp.encode());
+                    }
                     field.setAccessible(false);
-                    innerAvpsBytes.add(avp.encode());
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

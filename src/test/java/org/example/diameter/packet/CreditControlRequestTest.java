@@ -34,7 +34,7 @@ class CreditControlRequestTest {
         assertThat(ccr.getCcRequestNumber().getData()).isEqualTo(0);
         assertThat(ccr.getSubscriptionId().get(0).getData().getSubscriptionIdData().getData()).isEqualTo("886987175568");
         assertThat(ccr.getSubscriptionId().get(0).getData().getSubscriptionIdType().getData()).isEqualTo(0);
-        assertThat(ccr.getSupportedFeatures().get(0).getData().getFeatureList().getData()).isEqualTo(11);
+        assertThat(ccr.getSupportedFeatures().get(0).getData().getFeatureList().getData()).isEqualTo(HexFormat.of().parseHex("0000000b"));
         assertThat(ccr.getSupportedFeatures().get(0).getData().getFeatureListId().getData()).isEqualTo(1);
         assertThat(ccr.getNetworkRequestSupport().getData()).isEqualTo(0);
 
