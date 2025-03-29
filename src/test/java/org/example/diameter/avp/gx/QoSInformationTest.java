@@ -29,5 +29,11 @@ class QoSInformationTest {
 
         byte[] encoded = qoSInformation.encode();
         assertThat(encoded).isEqualTo(buffer);
+
+        AvpHeader header = ReadAvpHeader.readAvpHeaderFromBytes(encoded,0);
+        QoSInformation qoSInformation1 = new QoSInformation(header,encoded,0);
+        assertThat(qoSInformation1.getData().getMaxRequestedBandwidthDL().getData()).isEqualTo(32000);
+        assertThat(qoSInformation1.getData().getMaxRequestedBandwidthUL().getData()).isEqualTo(32000);
     }
+
 }

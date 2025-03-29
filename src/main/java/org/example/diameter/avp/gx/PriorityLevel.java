@@ -8,7 +8,7 @@ import org.example.diameter.utils.EncodeUtils;
 @AvpRegister(avpCode = 1046,avpBuilderMethod = "byteToAvp")
 public class PriorityLevel extends Avp<Integer> {
     public static int avpCode = 1046;
-    public static byte flags = (byte) 0x80;
+    public static byte flags = (byte) 0xc0;
 
     public PriorityLevel(Integer data) {
         super(data);

@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.example.diameter.avp.*;
 import org.example.diameter.avp.common.RatingGroup;
 import org.example.diameter.avp.common.ServiceIdentifier;
+import org.example.diameter.avp.enums.VendorId;
+import org.example.diameter.utils.EncodeAvp;
 
 import java.util.ArrayList;
 
@@ -47,44 +49,53 @@ Charging-Rule-Definition ::= < AVP Header: 1003 >
 public class ChargingRuleDefinition extends Avp<ChargingRuleDefinition> {
     public static int avpCode = 1003;
     public static byte flags = (byte) 0xc0;
-    @Setter@Getter
+    @InnerAvp@Setter@Getter
     private ChargingRuleName chargingRuleName;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private ServiceIdentifier serviceIdentifier;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private RatingGroup ratingGroup;
     //private List<FlowInformation> flowInformation;
     //@Getter@Setter
     //private FlowStatus flowStatus;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private QoSInformation qoSInformation;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private Online online;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private Offline offline;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private MeteringMethod meteringMethod;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private MonitoringKey monitoringKey;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private Precedence precedence;
 
     public ChargingRuleDefinition(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
+    public ChargingRuleDefinition() {
+        super(null);
+    }
 
     public static AvpBuilder byteToAvp(){
         return new AvpBuilder(ChargingRuleDefinition::new);
     }
 
     @Override
+    public ChargingRuleDefinition returnContent() {
+        return this;
+    }
+
+    @Override
     public ChargingRuleDefinition decode(byte[] buffer, int position, AvpHeader header) {
         return (ChargingRuleDefinition) AvpTypeDecoders.GroupedAvpDecoder.decode(this, buffer, position, header);
     }
+
     @Override
-    public ChargingRuleDefinition returnContent() {
-        return this;
+    public byte[] encode() {
+        return EncodeAvp.encodeGroup(this,avpCode,flags, VendorId.GPP.getValue());
     }
 
 }

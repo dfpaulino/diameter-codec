@@ -68,8 +68,10 @@ public class EncodeAvp {
                 try {
                     field.setAccessible(true);
                     Collection<Avp<?>> avps = (Collection<Avp<?>>) field.get(self);
+                    if(null!=avps){
+                        avps.forEach(avp -> innerAvpsBytes.add(avp.encode()));
+                    }
                     field.setAccessible(false);
-                    avps.forEach(avp -> innerAvpsBytes.add(avp.encode()));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

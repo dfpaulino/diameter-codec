@@ -3,6 +3,8 @@ package org.example.diameter.avp.gx;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.*;
+import org.example.diameter.avp.enums.VendorId;
+import org.example.diameter.utils.EncodeAvp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +28,29 @@ Charging-Rule-Install ::=< AVP Header: 1001 >
 public class ChargingRuleInstall extends Avp<ChargingRuleInstall> {
     public static int avpCode = 1001;
     public static byte flags = (byte) 0xc0;
-    @Getter
+    @InnerAvp(isCollection = true)@Getter
     private List<ChargingRuleDefinition> chargingRuleDefinition ;
-    @Getter
+    @InnerAvp(isCollection = true)@Getter
     private List<ChargingRuleName> chargingRuleName ;
-    @Getter
+    @InnerAvp(isCollection = true)@Getter
     private List<ChargingRuleBaseName> chargingRuleBaseName  ;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private BearerIdentifier bearerIdentifier;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private MonitoringFlags monitoringFlags;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private RuleActivationTime ruleActivationTime;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private RuleDeactivationTime ruleDeactivationTime;
-    @Getter@Setter
+    @InnerAvp@Getter@Setter
     private IpCanType ipCanType;
 
     public ChargingRuleInstall(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
+    }
+
+    public ChargingRuleInstall() {
+        super(null);
     }
 
     public void setChargingRuleDefinition(ChargingRuleDefinition chargingRuleDefinition) {
@@ -73,12 +79,18 @@ public class ChargingRuleInstall extends Avp<ChargingRuleInstall> {
     }
 
     @Override
+    public ChargingRuleInstall returnContent() {
+        return this;
+    }
+
+    @Override
     public ChargingRuleInstall decode(byte[] buffer, int position, AvpHeader header) {
         return (ChargingRuleInstall) AvpTypeDecoders.GroupedAvpDecoder.decode(this, buffer, position, header);
     }
 
     @Override
-    public ChargingRuleInstall returnContent() {
-        return this;
+    public byte[] encode() {
+        return EncodeAvp.encodeGroup(this,avpCode,flags, VendorId.GPP.getValue());
     }
+
 }
