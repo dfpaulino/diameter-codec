@@ -63,15 +63,15 @@ public class ChargingRuleDefinition extends Avp<ChargingRuleDefinition> {
     @InnerAvp@Getter@Setter
     private QoSInformation qoSInformation;
     @InnerAvp@Getter@Setter
+    private MeteringMethod meteringMethod;
+    @InnerAvp@Getter@Setter
+    private Precedence precedence;
+    @InnerAvp@Getter@Setter
     private Online online;
     @InnerAvp@Getter@Setter
     private Offline offline;
-    @InnerAvp@Getter@Setter
-    private MeteringMethod meteringMethod;
-    @InnerAvp@Getter@Setter
     private MonitoringKey monitoringKey;
-    @InnerAvp@Getter@Setter
-    private Precedence precedence;
+
 
     public ChargingRuleDefinition(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);

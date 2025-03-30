@@ -1,29 +1,35 @@
 package org.example.diameter.avp.gx;
 
-import org.example.diameter.avp.*;
+import org.example.diameter.avp.Avp;
+import org.example.diameter.avp.AvpBuilder;
+import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.AvpRegister;
 import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.utils.EncodeAvp;
 import org.example.diameter.utils.EncodeUtils;
 
-@AvpRegister(avpCode =1080,avpBuilderMethod = "byteToAvp")
-public class FlowDirection extends Avp<Integer> {
-    public static int avpCode = 1080;
+import static org.example.diameter.avp.AvpTypeDecoders.Integer32Decoder;
+
+@AvpRegister(avpCode = 1006,avpBuilderMethod = "byteToAvp")
+public class EventTrigger extends Avp<Integer> {
+    public static int avpCode = 1006;
     public static byte flags = (byte) 0xc0;
 
-    public FlowDirection(AvpHeader header, byte[] buffer, int position) {
+    public EventTrigger(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
-    public FlowDirection(Integer data) {
+    public EventTrigger(Integer data) {
         super(data);
     }
 
     public static AvpBuilder byteToAvp(){
-        return new AvpBuilder(FlowDirection::new);
+        return new AvpBuilder(EventTrigger::new);
     }
+
     @Override
     public Integer decode(byte[] buffer, int position, AvpHeader header) {
-        return AvpTypeDecoders.Integer32Decoder.decode(buffer, position, header);
+        return Integer32Decoder.decode(buffer, position, header);
     }
 
     @Override
