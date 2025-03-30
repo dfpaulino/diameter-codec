@@ -33,7 +33,7 @@ public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
     private OriginRealm originRealm;
     @Setter
     @Getter
-    private DestinationRealm destinationRealm;
+    private ResultCode resultCode;
     @Setter
     @Getter
     private CcRequestType ccRequestType;
@@ -42,72 +42,15 @@ public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
     private CcRequestNumber ccRequestNumber;
     @Setter
     @Getter
-    private DestinationHost destinationHost;
-    @Setter
-    @Getter
     private OriginStateId originStateId;
+    @Setter@Getter
+    private BearerControlMode bearerControlMode;
     @Getter
-    private List<SubscriptionId> subscriptionId;
+    private List<EventTrigger> eventTrigger;
     @Getter
-    private List<SupportedFeatures> supportedFeatures;
-    @Setter
+    private List<ChargingRuleInstall> chargingRuleInstall;
     @Getter
-    private NetworkRequestSupport networkRequestSupport;
-    @Setter
-    @Getter
-    private BearerIdentifier bearerIdentifier;
-    @Setter
-    @Getter
-    private BearerOperation bearerOperation;
-
-    @Setter
-    @Getter
-    private FrameIpAddress frameIpAddress;
-
-    @Setter
-    @Getter
-    private IpCanType ipCanType;
-    @Setter
-    @Getter
-    private GppRatType gppRatType;
-    @Setter
-    @Getter
-    private RatType ratType;
-    @Setter
-    @Getter
-    private TerminationCause terminationCause;
-    @Setter
-    @Getter
-    private UserEquipmentInfo userEquipmentInfo;
-    @Setter
-    @Getter
-    private QoSInformation qoSInformation;
-    @Setter
-    @Getter
-    private QoSNegotiation qoSNegotiation;
-    @Setter
-    @Getter
-    private QoSUpgrade qoSUpgrade;
-    @Setter
-    @Getter
-    private GppSgsnAddress gppSgsnAddress;
-    @Setter
-    @Getter
-    private GppGgsnAddress gppGgsnAddress;
-    @Setter
-    @Getter
-    private GppUserLocationInfo gppUserLocationInfo;
-    @Setter
-    @Getter
-    private CalledStationId calledStationId;
-    @Setter
-    @Getter
-    private BearerUsage bearerUsage;
-    @Setter
-    @Getter
-    private AccessNetworkChargingAddress accessNetworkChargingAddress;
-    @Getter
-    private List<AccessNetworkChargingIdentifierGx> accessNetworkChargingIdentifierGx;
+    private List<ChargingRuleRemove> chargingRuleRemove;
     @Setter
     @Getter
     private Online online;
@@ -115,37 +58,60 @@ public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
     @Getter
     private Offline offline;
 
+    @Getter
+    private List<QoSInformation> qoSInformation;
+    @Setter
+    @Getter
+    private  RevalidationTime revalidationTime;
+    @Setter
+    @Getter
+    private DefaultEpsBearerQoS defaultEpsBearerQoS;
+    @Setter
+    @Getter
+    private BearerUsage bearerUsage;
+
+
+
 
     // called when received from socket
     public CreditControlAnswer(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
     }
 
+    public void setEventTrigger(EventTrigger eventTrigger) {
+        if(this.eventTrigger == null){
+          this.eventTrigger = new ArrayList<>();
+        }
+        this.eventTrigger.add(eventTrigger);
+    }
 
+    public void setChargingRuleInstall(ChargingRuleInstall chargingRuleInstall) {
+        if(this.chargingRuleInstall == null){
+            this.chargingRuleInstall = new ArrayList<>();
+        }
+        this.chargingRuleInstall.add(chargingRuleInstall);
+    }
+
+    public void setChargingRuleRemove(ChargingRuleRemove chargingRuleRemove) {
+        if(this.chargingRuleRemove == null){
+            this.chargingRuleRemove = new ArrayList<>();
+        }
+        this.chargingRuleRemove.add(chargingRuleRemove);
+    }
+
+    public void setQoSInformation(QoSInformation qoSInformation){
+        if(this.qoSInformation == null){
+            this.qoSInformation = new ArrayList<>();
+        }
+        this.qoSInformation.add(qoSInformation);
+    }
 
     @Override
     public CreditControlAnswer decode(DiameterPacketHeader header, byte[] buffer) {
         return DiameterPacketDecoder.packetDecode(this);
     }
 
-    public void setAccessNetworkChargingIdentifierGx(AccessNetworkChargingIdentifierGx accessNetworkChargingIdentifierGx) {
-        if (this.accessNetworkChargingIdentifierGx == null) {
-            this.accessNetworkChargingIdentifierGx = new ArrayList<>(2);
-        }
-        this.accessNetworkChargingIdentifierGx.add(accessNetworkChargingIdentifierGx);
-    }
 
-    public void setSupportedFeatures(SupportedFeatures supportedFeatures) {
-        if (this.supportedFeatures == null) {
-            this.supportedFeatures = new ArrayList<>(2);
-        }
-        this.supportedFeatures.add(supportedFeatures);
-    }
 
-    public void setSubscriptionId(SubscriptionId subscriptionId) {
-        if (this.subscriptionId == null) {
-            this.subscriptionId = new ArrayList<>(2);
-        }
-        this.subscriptionId.add(subscriptionId);
-    }
+
 }

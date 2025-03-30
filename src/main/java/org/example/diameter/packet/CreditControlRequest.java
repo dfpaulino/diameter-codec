@@ -199,6 +199,9 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     @Getter
     private Offline offline;
 
+    @Getter@Setter
+    private EventTrigger eventTrigger;
+
 
     // called when received from socket
     public CreditControlRequest(DiameterPacketHeader header, byte[] rawData) {
