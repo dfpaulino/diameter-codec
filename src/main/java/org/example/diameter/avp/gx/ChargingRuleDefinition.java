@@ -9,6 +9,7 @@ import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.utils.EncodeAvp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 Charging-Rule-Definition ::= < AVP Header: 1003 >
@@ -55,9 +56,10 @@ public class ChargingRuleDefinition extends Avp<ChargingRuleDefinition> {
     private ServiceIdentifier serviceIdentifier;
     @InnerAvp@Getter@Setter
     private RatingGroup ratingGroup;
-    //private List<FlowInformation> flowInformation;
-    //@Getter@Setter
-    //private FlowStatus flowStatus;
+    @InnerAvp(isCollection = true)@Getter
+    private List<FlowInformation> flowInformation;
+    @InnerAvp@Getter@Setter
+    private FlowStatus flowStatus;
     @InnerAvp@Getter@Setter
     private QoSInformation qoSInformation;
     @InnerAvp@Getter@Setter
@@ -81,6 +83,13 @@ public class ChargingRuleDefinition extends Avp<ChargingRuleDefinition> {
 
     public static AvpBuilder byteToAvp(){
         return new AvpBuilder(ChargingRuleDefinition::new);
+    }
+
+    public void setFlowInformation(FlowInformation flowInformation) {
+        if(this.flowInformation == null){
+            this.flowInformation = new ArrayList<>();
+        }
+        this.flowInformation.add(flowInformation);
     }
 
     @Override

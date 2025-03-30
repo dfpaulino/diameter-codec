@@ -5,21 +5,21 @@ import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.utils.EncodeAvp;
 import org.example.diameter.utils.EncodeUtils;
 
-@AvpRegister(avpCode =1020,avpBuilderMethod = "byteToAvp")
-public class BearerIdentifier extends Avp<byte[]> {
-    public static int avpCode = 1020;
+@AvpRegister(avpCode =1014,avpBuilderMethod = "byteToAvp")
+public class TosTrafficClass extends Avp<byte[]> {
+    public static int avpCode = 1014;
     public static byte flags = (byte) 0xc0;
 
-    public BearerIdentifier(AvpHeader header, byte[] buffer, int position) {
+    public TosTrafficClass(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
 
-    public BearerIdentifier(byte[] data) {
+    public TosTrafficClass(byte[] data) {
         super(data);
     }
 
     public static AvpBuilder byteToAvp(){
-        return new AvpBuilder(BearerIdentifier::new);
+        return new AvpBuilder(TosTrafficClass::new);
     }
     @Override
     public byte[] decode(byte[] buffer, int position, AvpHeader header) {
@@ -28,7 +28,7 @@ public class BearerIdentifier extends Avp<byte[]> {
 
     @Override
     public byte[] encode() {
-        return EncodeAvp.encode(avpCode,flags,4, VendorId.GPP.getValue(),
+        return EncodeAvp.encode(avpCode,flags,this.getData().length, VendorId.GPP.getValue(),
                 EncodeUtils.OctectStringToBytes(this.getData()));
     }
 }

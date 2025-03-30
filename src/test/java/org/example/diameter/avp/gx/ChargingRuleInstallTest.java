@@ -73,6 +73,14 @@ class ChargingRuleInstallTest {
 
         assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getOnline().getData()).isEqualTo(1);
 
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().size()).isEqualTo(2);
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().get(0).getData().getFlowDirection().getData()).isEqualTo(2);
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().get(1).getData().getFlowDirection().getData()).isEqualTo(1);
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().get(0).getData().getFlowDescription().getData()).isEqualTo("permit in 17 from 172.17.241.255 17104 to 172.16.20.111/32");
+        assertThat(cri.getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().get(1).getData().getFlowDescription().getData()).isEqualTo("permit out 17 from 172.16.20.111/32 to 172.17.241.255 17104");
+        assertThat(cri.getData().getChargingRuleDefinition().get(1).getData().getFlowInformation().get(0).getData().getFlowDescription().getData()).isEqualTo("permit in 17 from 172.17.241.255 17105 to 172.16.20.111/32");
+        assertThat(cri.getData().getChargingRuleDefinition().get(1).getData().getFlowInformation().get(1).getData().getFlowDescription().getData()).isEqualTo("permit out 17 from 172.16.20.111/32 to 172.17.241.255 17105");
+
     }
 
     @Test
