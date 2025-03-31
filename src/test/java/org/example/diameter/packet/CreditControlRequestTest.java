@@ -77,5 +77,24 @@ class CreditControlRequestTest {
         CreditControlRequest ccr = new CreditControlRequest(header,diamPacket);
         assertThat(ccr.getData().getQoSInformation().getData()).isNotNull();
 
+        assertThat(ccr.getHeader().getCommandCode()).isEqualTo(272);
+        assertThat(ccr.getHeader().getCommandFlags()).isEqualTo((byte) 0xc0);
+        assertThat(ccr.getHeader().getMessageLength()).isEqualTo(772);
+        assertThat(ccr.getHeader().getApplicationId()).isEqualTo(16777238);
+
+        assertThat(ccr.getSessionId().getData()).isEqualTo("string;459;844;IMSI999991234567810");
+        assertThat(ccr.getOriginHost().getData()).isEqualTo("string");
+        assertThat(ccr.getOriginRealm().getData()).isEqualTo("string");
+        assertThat(ccr.getDestinationRealm().getData()).isEqualTo("magma.com");
+        assertThat(ccr.getDestinationHost().getData()).isEqualTo("magma-fedgw.magma.com");
+        assertThat(ccr.getCcRequestType().getData()).isEqualTo(1);
+        assertThat(ccr.getCcRequestNumber().getData()).isEqualTo(0);
+        assertThat(ccr.getSubscriptionId().get(1).getData().getSubscriptionIdData().getData()).isEqualTo("1234567810");
+        assertThat(ccr.getSubscriptionId().get(1).getData().getSubscriptionIdType().getData()).isEqualTo(0);
+        assertThat(ccr.getNetworkRequestSupport().getData()).isEqualTo(0);
+        assertThat(ccr.getQoSInformation().getData().getApnAggregateMaxBitrateDL().getData()).isEqualTo(97000000);
+        assertThat(ccr.getGppUserLocationInfo().getData()).isEqualTo(HexFormat.of().parseHex("8200f110000100f11000000101"));
+        assertThat(ccr.getDefaultEpsBearerQoS().getData().getAllocationRetentionPriority().getData().getPriorityLevel().getData()).isEqualTo(9);
+
     }
 }

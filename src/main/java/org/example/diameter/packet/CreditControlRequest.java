@@ -202,6 +202,9 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     @Getter@Setter
     private EventTrigger eventTrigger;
 
+    @Getter@Setter
+    private DefaultEpsBearerQoS defaultEpsBearerQoS;
+
 
     // called when received from socket
     public CreditControlRequest(DiameterPacketHeader header, byte[] rawData) {

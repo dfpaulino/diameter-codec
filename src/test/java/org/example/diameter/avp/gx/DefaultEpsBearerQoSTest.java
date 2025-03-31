@@ -2,6 +2,7 @@ package org.example.diameter.avp.gx;
 
 import ch.qos.logback.core.model.processor.DenyAllModelFilter;
 import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.utils.ReadAvpHeader;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,10 @@ class DefaultEpsBearerQoSTest {
     @Test
     void byteToAvp() {
         AvpHeader header = ReadAvpHeader.readAvpHeaderFromBytes(buffer,0);
+
+        assertThat(header.getAvpCode()).isEqualTo(DefaultEpsBearerQoS.avpCode);
+        assertThat(header.getAvpFlags()).isEqualTo(DefaultEpsBearerQoS.flags);
+        assertThat(header.getVendorId().get()).isEqualTo(VendorId.GPP.getValue());
         DefaultEpsBearerQoS defaultEpsBearerQoS = new DefaultEpsBearerQoS(header,buffer,0);
         assertThat(defaultEpsBearerQoS.getData().getQoSClassIdentifier().getData()).isEqualTo(9);
         assertThat(defaultEpsBearerQoS.getData().getAllocationRetentionPriority().getData().getPriorityLevel().getData()).isEqualTo(9);
@@ -34,6 +39,7 @@ class DefaultEpsBearerQoSTest {
         arp.setPreEmptionVulnerability(new PreEmptionVulnerability(0));
         defaultEpsBearerQoS.setAllocationRetentionPriority(arp);
 
+        //this is not really accurate, reflection does not guarantee same order of the defined fields...
         assertThat(defaultEpsBearerQoS.encode()).isEqualTo(buffer);
     }
 }
