@@ -1,13 +1,10 @@
 package org.example.diameter.utils;
 
-import org.example.diameter.avp.Avp;
-
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class EncodeUtils {
 

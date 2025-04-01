@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.*;
 import org.example.diameter.utils.EncodeAvp;
-import org.example.diameter.utils.EncodeUtils;
+
 
 @AvpRegister(avpCode =443,avpBuilderMethod = "byteToAvp")
 public class SubscriptionId extends Avp<SubscriptionId> {
