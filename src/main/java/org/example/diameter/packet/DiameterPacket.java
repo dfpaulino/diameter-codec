@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 public abstract class DiameterPacket<T> {
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacket.class);
     @Getter
-    private final DiameterPacketHeader header;
+    private DiameterPacketHeader header;
     // The whole data as byte[]
     private byte[] buffer;
     // object data (decoded format)
@@ -41,16 +41,14 @@ public abstract class DiameterPacket<T> {
         this.header = header;
         this.buffer = buffer;
         // lazy decoding
-        //this.data = this.decode(header, buffer);
+        this.data = this.decode(header, buffer);
     }
 
-    public DiameterPacket(DiameterPacketHeader header, T data) {
-        this.header = header;
-        this.data = data;
+    public DiameterPacket() {
     }
 
     public T getData() {
-        if (this.data == null) {
+        if (this.data == null && buffer!=null) {
             this.data = this.decode(this.header, this.buffer);
         }
         return this.data;

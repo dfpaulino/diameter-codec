@@ -1,5 +1,6 @@
 package org.example.diameter.packet;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.common.*;
 
@@ -30,28 +31,34 @@ Message Format
 public class CapabilitiesExchangeAnswer extends DiameterPacket<CapabilitiesExchangeAnswer> {
 
     // AVP definitions
-    @Setter
+    @Getter@Setter
     private ResultCode resultCode;
-    @Setter
+    @Getter@Setter
     private OriginHost originHost;
-    @Setter
+    @Getter@Setter
     private OriginRealm originRealm;
-    @Setter
+    @Getter@Setter
     private HostIpAddress hostIpAddress;
-    @Setter
+    @Getter@Setter
     private VendorId vendorId;
-    @Setter
+    @Getter@Setter
     private ProductName productName;
-    @Setter
+    @Getter@Setter
     private OriginStateId originStateId;
-
-    private final List<AuthApplicationId> authApplicationId = new ArrayList<>();
-    private final List<SupportedVendorId> supportedVendorId = new ArrayList<>();
-    private final List<VendorSpecificApplicationId> vendorSpecificApplicationId = new ArrayList<>();
+    @Getter
+    private List<AuthApplicationId> authApplicationId;
+    @Getter
+    private List<SupportedVendorId> supportedVendorId;
+    @Getter
+    private List<VendorSpecificApplicationId> vendorSpecificApplicationId = new ArrayList<>();
 
     // called when received from socket
     public CapabilitiesExchangeAnswer(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
+    }
+
+    public CapabilitiesExchangeAnswer() {
+        super();
     }
 
     @Override
@@ -60,12 +67,27 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket<CapabilitiesExcha
     }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
+        if(this.supportedVendorId == null) {
+            this.supportedVendorId = new ArrayList<>();
+        }
         this.supportedVendorId.add(supportedVendorId);
     }
 
-    public void setSupportedVendorId(List<SupportedVendorId> supportedVendorId) {
-        this.supportedVendorId.addAll(supportedVendorId);
+    public void setVendorSpecificApplicationId(VendorSpecificApplicationId vendorSpecificApplicationId) {
+        if(this.vendorSpecificApplicationId == null) {
+            this.vendorSpecificApplicationId = new ArrayList<>();
+        }
+        this.vendorSpecificApplicationId.add(vendorSpecificApplicationId);
     }
+
+    public void setAuthApplicationId(AuthApplicationId authApplicationId) {
+        if(this.authApplicationId == null) {
+            this.authApplicationId = new ArrayList<>();
+        }
+        this.authApplicationId.add(authApplicationId);
+    }
+
+
 
 
 }

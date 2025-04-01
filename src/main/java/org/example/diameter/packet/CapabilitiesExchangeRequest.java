@@ -26,7 +26,6 @@ Message Format
               * [ AVP ]
  */
 public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExchangeRequest> {
-
     // AVP definitions
     @Setter
     @Getter
@@ -58,10 +57,15 @@ public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExch
         super(header, rawData);
     }
 
+    public CapabilitiesExchangeRequest() {
+        super();
+    }
     @Override
     public CapabilitiesExchangeRequest decode(DiameterPacketHeader header, byte[] buffer) {
         return DiameterPacketDecoder.packetDecode(this);
     }
+
+
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
         if (this.supportedVendorId == null) {

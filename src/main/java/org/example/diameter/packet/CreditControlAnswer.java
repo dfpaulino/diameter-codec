@@ -2,6 +2,7 @@ package org.example.diameter.packet;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.gx.*;
 import org.example.diameter.avp.rx.AccessNetworkChargingAddress;
@@ -19,63 +20,50 @@ Message Format
 public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
 
     // AVP definitions
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private SessionId sessionId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private AuthApplicationId authApplicationId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginHost originHost;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginRealm originRealm;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private ResultCode resultCode;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private CcRequestType ccRequestType;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private CcRequestNumber ccRequestNumber;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginStateId originStateId;
-    @Setter@Getter
+    @InnerAvp @Setter @Getter
     private BearerControlMode bearerControlMode;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<EventTrigger> eventTrigger;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<ChargingRuleInstall> chargingRuleInstall;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<ChargingRuleRemove> chargingRuleRemove;
-    @Setter
-    @Getter
+    @InnerAvp @Getter @Setter
     private Online online;
-    @Setter
-    @Getter
+    @InnerAvp @Getter @Setter
     private Offline offline;
 
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<QoSInformation> qoSInformation;
-    @Setter
-    @Getter
+    @InnerAvp @Getter @Setter
     private  RevalidationTime revalidationTime;
-    @Setter
-    @Getter
+    @InnerAvp @Getter @Setter
     private DefaultEpsBearerQoS defaultEpsBearerQoS;
-    @Setter
-    @Getter
+    @InnerAvp @Getter @Setter
     private BearerUsage bearerUsage;
-
-
-
 
     // called when received from socket
     public CreditControlAnswer(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
+    }
+
+    public CreditControlAnswer() {
     }
 
     public void setEventTrigger(EventTrigger eventTrigger) {

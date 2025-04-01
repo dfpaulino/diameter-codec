@@ -2,6 +2,7 @@ package org.example.diameter.packet;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.gx.*;
 import org.example.diameter.avp.rx.AccessNetworkChargingAddress;
@@ -103,106 +104,73 @@ X[ 3GPP-PS-Data-Off-Status ]
 public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
 
     // AVP definitions
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private SessionId sessionId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private AuthApplicationId authApplicationId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginHost originHost;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginRealm originRealm;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private DestinationRealm destinationRealm;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private CcRequestType ccRequestType;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private CcRequestNumber ccRequestNumber;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private DestinationHost destinationHost;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginStateId originStateId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<SubscriptionId> subscriptionId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<SupportedFeatures> supportedFeatures;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private NetworkRequestSupport networkRequestSupport;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private BearerIdentifier bearerIdentifier;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private BearerOperation bearerOperation;
-
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private FrameIpAddress frameIpAddress;
-
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private IpCanType ipCanType;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private GppRatType gppRatType;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private RatType ratType;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private TerminationCause terminationCause;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private UserEquipmentInfo userEquipmentInfo;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private QoSInformation qoSInformation;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private QoSNegotiation qoSNegotiation;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private QoSUpgrade qoSUpgrade;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private GppSgsnAddress gppSgsnAddress;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private GppGgsnAddress gppGgsnAddress;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private GppUserLocationInfo gppUserLocationInfo;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private CalledStationId calledStationId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private BearerUsage bearerUsage;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private AccessNetworkChargingAddress accessNetworkChargingAddress;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<AccessNetworkChargingIdentifierGx> accessNetworkChargingIdentifierGx;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private Online online;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private Offline offline;
-
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private EventTrigger eventTrigger;
-
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private DefaultEpsBearerQoS defaultEpsBearerQoS;
 
 
@@ -211,7 +179,8 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
         super(header, rawData);
     }
 
-
+    public CreditControlRequest() {
+    }
 
     @Override
     public CreditControlRequest decode(DiameterPacketHeader header, byte[] buffer) {
