@@ -111,7 +111,4 @@ public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
         return DiameterPacketDecoder.packetDecode(this);
     }
 
-
-
-
 }
