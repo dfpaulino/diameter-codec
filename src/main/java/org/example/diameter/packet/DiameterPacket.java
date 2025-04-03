@@ -1,6 +1,7 @@
 package org.example.diameter.packet;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,44 +27,28 @@ import org.slf4j.LoggerFactory;
    |  AVPs ...
    +-+-+-+-+-+-+-+-+-+-+-+-+
  */
-// Global Diamter Packet
+// Global Diameter Packet
 
-public abstract class DiameterPacket<T> {
+public abstract class DiameterPacket {
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacket.class);
+    @Setter
     @Getter
     private DiameterPacketHeader header;
     // The whole data as byte[]
+    @Getter
     private byte[] buffer;
     // object data (decoded format)
-    private T data;
 
     public DiameterPacket(DiameterPacketHeader header, byte[] buffer) {
         this.header = header;
         this.buffer = buffer;
-        // lazy decoding
-        this.data = this.decode(header, buffer);
+        this.decode(header, buffer);
     }
 
     public DiameterPacket() {
     }
 
-    public T getData() {
-        if (this.data == null && buffer!=null) {
-            this.data = this.decode(this.header, this.buffer);
-        }
-        return this.data;
-    }
+    public abstract void decode(DiameterPacketHeader header, byte[] buffer);
 
-    public byte[] getBuffer() {
-        if (this.buffer.length == 0) {
-            this.buffer = this.encode();
-        }
-        return buffer;
-    }
-
-    public abstract T decode(DiameterPacketHeader header, byte[] buffer);
-
-    private byte[] encode() {
-        return new byte[1024];
-    }
+    public byte[] encode(){return new byte[1024];};
 }

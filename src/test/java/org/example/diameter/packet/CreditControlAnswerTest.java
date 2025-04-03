@@ -1,6 +1,9 @@
 package org.example.diameter.packet;
 
 
+import org.example.diameter.avp.common.*;
+import org.example.diameter.avp.enums.AuthApplicationIdEnum;
+import org.example.diameter.avp.gx.*;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.junit.jupiter.api.Test;
 
@@ -22,19 +25,19 @@ class CreditControlAnswerTest {
         assertThat(header.getCommandCode()).isEqualTo(272);
         assertThat(header.getCommandFlags()).isEqualTo((byte)0x40);
 
-        assertThat(cca.getData().getSessionId().getData()).isEqualTo("ptsd-5.module-1.TPEPTS01.taiwanmobile.com;1411018761;0;192.168.202.29");
-        assertThat(cca.getData().getAuthApplicationId().getData()).isEqualTo(16777238);
-        assertThat(cca.getData().getCcRequestType().getData()).isEqualTo(1);
-        assertThat(cca.getData().getCcRequestNumber().getData()).isEqualTo(0);
-        assertThat(cca.getData().getEventTrigger().size()).isEqualTo(4);
-        assertThat(cca.getData().getEventTrigger().getFirst().getData()).isEqualTo(1);
-        assertThat(cca.getData().getEventTrigger().get(1).getData()).isEqualTo(2);
-        assertThat(cca.getData().getEventTrigger().get(2).getData()).isEqualTo(0);
-        assertThat(cca.getData().getEventTrigger().get(3).getData()).isEqualTo(33);
+        assertThat(cca.getSessionId().getData()).isEqualTo("ptsd-5.module-1.TPEPTS01.taiwanmobile.com;1411018761;0;192.168.202.29");
+        assertThat(cca.getAuthApplicationId().getData()).isEqualTo(16777238);
+        assertThat(cca.getCcRequestType().getData()).isEqualTo(1);
+        assertThat(cca.getCcRequestNumber().getData()).isEqualTo(0);
+        assertThat(cca.getEventTrigger().size()).isEqualTo(4);
+        assertThat(cca.getEventTrigger().getFirst().getData()).isEqualTo(1);
+        assertThat(cca.getEventTrigger().get(1).getData()).isEqualTo(2);
+        assertThat(cca.getEventTrigger().get(2).getData()).isEqualTo(0);
+        assertThat(cca.getEventTrigger().get(3).getData()).isEqualTo(33);
 
-        assertThat(cca.getData().getChargingRuleInstall().size()).isEqualTo(1);
-        assertThat(cca.getData().getChargingRuleInstall().getFirst().getData().getChargingRuleBaseName().getFirst().getData()).isEqualTo("100");
-        assertThat(cca.getData().getQoSInformation().getFirst().getData().getMaxRequestedBandwidthDL().getData()).isEqualTo(153600000);
+        assertThat(cca.getChargingRuleInstall().size()).isEqualTo(1);
+        assertThat(cca.getChargingRuleInstall().getFirst().getData().getChargingRuleBaseName().getFirst().getData()).isEqualTo("100");
+        assertThat(cca.getQoSInformation().getFirst().getData().getMaxRequestedBandwidthDL().getData()).isEqualTo(153600000);
     }
 
     @Test
@@ -46,18 +49,108 @@ class CreditControlAnswerTest {
         assertThat(header.getCommandCode()).isEqualTo(272);
         assertThat(header.getCommandFlags()).isEqualTo((byte)0x40);
 
-        assertThat(cca.getData().getSessionId().getData()).isEqualTo("string;459;844;IMSI999991234567810");
-        assertThat(cca.getData().getAuthApplicationId().getData()).isEqualTo(16777238);
-        assertThat(cca.getData().getCcRequestType().getData()).isEqualTo(1);
-        assertThat(cca.getData().getCcRequestNumber().getData()).isEqualTo(0);
-        assertThat(cca.getData().getEventTrigger().size()).isEqualTo(1);
-        assertThat(cca.getData().getEventTrigger().getFirst().getData()).isEqualTo(1);
+        assertThat(cca.getSessionId().getData()).isEqualTo("string;459;844;IMSI999991234567810");
+        assertThat(cca.getAuthApplicationId().getData()).isEqualTo(16777238);
+        assertThat(cca.getCcRequestType().getData()).isEqualTo(1);
+        assertThat(cca.getCcRequestNumber().getData()).isEqualTo(0);
+        assertThat(cca.getEventTrigger().size()).isEqualTo(1);
+        assertThat(cca.getEventTrigger().getFirst().getData()).isEqualTo(1);
 
 
-        assertThat(cca.getData().getChargingRuleInstall().size()).isEqualTo(1);
-        assertThat(cca.getData().getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().size()).isEqualTo(2);
-        assertThat(cca.getData().getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getChargingRuleName().getData()).isEqualTo("PCC104-QCI9-DYNAMIC");
-        assertThat(cca.getData().getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getServiceIdentifier().getData()).isEqualTo(52);
-        assertThat(cca.getData().getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().getFirst().getData().getFlowDirection().getData()).isEqualTo(2);
+        assertThat(cca.getChargingRuleInstall().size()).isEqualTo(1);
+        assertThat(cca.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().size()).isEqualTo(2);
+        assertThat(cca.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getChargingRuleName().getData()).isEqualTo("PCC104-QCI9-DYNAMIC");
+        assertThat(cca.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getServiceIdentifier().getData()).isEqualTo(52);
+        assertThat(cca.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData().getFlowInformation().getFirst().getData().getFlowDirection().getData()).isEqualTo(2);
+    }
+
+    @Test
+    public void encode() {
+
+        byte[] encoded = generateCca().encode();
+
+        DiameterPacketHeader headeractual = ReadDiameterHeader.readDiameterHeaderFromBytes(encoded);
+        CreditControlAnswer ccaActual = new CreditControlAnswer(headeractual,encoded);
+
+        assertThat(ccaActual.getAuthApplicationId().getData()).isEqualTo(AuthApplicationIdEnum.TGPP.getValue());
+        assertThat(ccaActual.getSessionId().getData()).isEqualTo("string;459;844;IMSI999991234567810");
+        assertThat(ccaActual.getOriginHost().getData()).isEqualTo("pcrf.local");
+        assertThat(ccaActual.getOriginRealm().getData()).isEqualTo("home.com");
+        assertThat(ccaActual.getEventTrigger().size()).isEqualTo(2);
+        assertThat(ccaActual.getResultCode().getData()).isEqualTo(2001);
+
+        assertThat(ccaActual.getChargingRuleInstall().size()).isEqualTo(1);
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getChargingRuleName().getData()).isEqualTo("PCC-100");
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getFlowInformation().size()).isEqualTo(2);
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getFlowInformation().getFirst().getData().getFlowDescription().getData()).isEqualTo("permit out 17 from 172.16.20.111/32 to 172.17.241.255 17104");
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getOnline().getData()).isEqualTo(1);
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getQoSInformation().getData().getMaxRequestedBandwidthDL().getData()).isEqualTo(16000);
+        assertThat(ccaActual.getChargingRuleInstall().getFirst().getData().getChargingRuleDefinition().getFirst().getData()
+                .getQoSInformation().getData().getMaxRequestedBandwidthUL().getData()).isEqualTo(32000);
+
+        System.out.println("hello");
+
+    }
+
+
+    private CreditControlAnswer generateCca() {
+        DiameterPacketHeader header = ReadDiameterHeader.readDiameterHeaderFromBytes(buffer2);
+        CreditControlAnswer ccaBase = new CreditControlAnswer(header,buffer2);
+
+
+        CreditControlAnswer cca = new CreditControlAnswer();
+        cca.setHeader(header);
+        cca.setSessionId(new SessionId("string;459;844;IMSI999991234567810"));
+        cca.setAuthApplicationId(new AuthApplicationId(AuthApplicationIdEnum.TGPP.getValue()));
+        cca.setOriginHost(new OriginHost("pcrf.local"));
+        cca.setOriginRealm(new OriginRealm("home.com"));
+        cca.setResultCode(new ResultCode(2001));
+
+        cca.setEventTrigger(new EventTrigger(1));
+        cca.setEventTrigger(new EventTrigger(2));
+
+
+        ChargingRuleDefinition crd = new ChargingRuleDefinition();
+        crd.setChargingRuleName(new ChargingRuleName("PCC-100"));
+        crd.setServiceIdentifier(new ServiceIdentifier(52));
+        crd.setRatingGroup(new RatingGroup(2));
+        crd.setPrecedence(new Precedence(1));
+        crd.setOnline(new Online(1));
+        crd.setOffline(new Offline(0));
+
+        FlowInformation flowUp = new FlowInformation();
+        flowUp.setFlowDirection(new FlowDirection(2));
+        flowUp.setTosTrafficClass(new TosTrafficClass(HexFormat.of().parseHex("68fc")));
+        flowUp.setFlowDescription(new FlowDescription("permit out 17 from 172.16.20.111/32 to 172.17.241.255 17104"));
+
+        FlowInformation flowDown = new FlowInformation();
+        flowDown.setFlowDirection(new FlowDirection(1));
+        flowDown.setTosTrafficClass(new TosTrafficClass(HexFormat.of().parseHex("68fc")));
+        flowDown.setFlowDescription(new FlowDescription("permit in 17 from 172.17.241.255 17104 to 172.16.20.111/32"));
+
+        QoSInformation qoSInformation = new QoSInformation();
+        qoSInformation.setMaxRequestedBandwidthDL(new MaxRequestedBandwidthDL(16000));
+        qoSInformation.setMaxRequestedBandwidthUL(new MaxRequestedBandwidthUL(32000));
+        qoSInformation.setQoSClassIdentifier(new QoSClassIdentifier(9));
+        AllocationRetentionPriority arp = new AllocationRetentionPriority();
+        arp.setPreEmptionVulnerability(new PreEmptionVulnerability(1));
+        arp.setPreEmptionCapability(new PreEmptionCapability(1));
+        arp.setPriorityLevel(new PriorityLevel(15));
+        qoSInformation.setAllocationRetentionPriority(arp);
+
+        crd.setQoSInformation(qoSInformation);
+        crd.setFlowInformation(flowUp);
+        crd.setFlowInformation(flowDown);
+
+        ChargingRuleInstall cri = new ChargingRuleInstall();
+        cri.setChargingRuleDefinition(crd);
+        cca.setChargingRuleInstall(cri);
+
+        return cca;
     }
 }

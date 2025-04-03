@@ -1,9 +1,10 @@
-package org.example.diameter.packet;
+package org.example.diameter.packet.utils;
 
 import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpBuilder;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.ByteToAvpMapper;
+import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.utils.ReadAvpHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class DiameterPacketDecoder {
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacketDecoder.class);
     private static final ByteToAvpMapper BYTE_TO_AVP_MAPPER = ByteToAvpMapper.getInstance();
 
-    public static <T extends DiameterPacket<?>> T packetDecode(T packet) {
+    public static <T extends DiameterPacket> T packetDecode(T packet) {
         int position = 20;
         while (position < packet.getHeader().getMessageLength()) {
             //decode AVP Header

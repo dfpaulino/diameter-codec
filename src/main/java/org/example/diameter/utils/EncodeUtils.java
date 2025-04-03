@@ -12,6 +12,14 @@ public class EncodeUtils {
     Integers are encoded into 4 octets
     use big endian
      */
+    public static byte[] encodeLongTo4Bytes(long i) {
+        byte[] bytes = new byte[4];
+        bytes[0] = (byte)((i>>24)&0xff);
+        bytes[1] = (byte)((i>>16)&0xff);
+        bytes[2] = (byte)((i>>8)&0xff);
+        bytes[3] = (byte)(i&0xff);
+        return bytes;
+    }
     public static byte[] encodeIntTo4Bytes(int i) {
         byte[] bytes = new byte[4];
         bytes[0] = (byte)((i>>24)&0xff);

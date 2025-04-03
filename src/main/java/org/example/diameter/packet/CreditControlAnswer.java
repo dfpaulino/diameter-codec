@@ -5,19 +5,70 @@ import lombok.Setter;
 import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.gx.*;
-import org.example.diameter.avp.rx.AccessNetworkChargingAddress;
+import org.example.diameter.packet.utils.DiameterPacketDecoder;
+import org.example.diameter.packet.utils.DiameterPacketEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /*
 Message Format
-
- <CC-Request> ::= < Diameter Header: 272, REQ, PXY >
-
+<CC-Answer> ::=
+< Diameter Header: 272, PXY >
+< Session-Id >
+[ DRMP ]
+{ Auth-Application-Id }
+{ Origin-Host }
+{ Origin-Realm }
+[ Result-Code ]
+[ Experimental-Result ]
+{ CC-Request-Type }
+{ CC-Request-Number }
+[ OC-Supported-Features ]
+[ OC-OLR ]
+*[ Supported-Features ]
+[ Bearer-Control-Mode ]
+*[ Event-Trigger ]
+[ Event-Report-Indication ]
+[ Origin-State-Id ]
+*[ Redirect-Host ]
+[ Redirect-Host-Usage ]
+[ Redirect-Max-Cache-Time ]
+*[ Charging-Rule-Remove ]
+*[ Charging-Rule-Install ]
+[ Charging-Information ]
+[ Online ]
+[ Offline ]
+*[ QoS-Information ]
+[ Revalidation-Time ]
+[ Default-EPS-Bearer-QoS ]
+[ Default-QoS-Information ]
+[ Bearer-Usage ]
+*[ Usage-Monitoring-Information ]
+*[ CSG-Information-Reporting ]
+[ User-CSG-Information ]
+[ PRA-Install ]
+[ PRA-Remove ]
+[ Presence-Reporting-Area-Information ]
+[ Session-Release-Cause ]
+[ NBIFOM-Support ]
+[ NBIFOM-Mode ]
+[ Default-Access ]
+[ RAN-Rule-Support ]
+*[ Routing-Rule-Report ]
+0*4[ Conditional-Policy-Information ]
+[ Removal-Of-Access ]
+[ IP-CAN-Type ]
+[ Error-Message ]
+[ Error-Reporting-Host ]
+[ Failed-AVP ]
+*[ Proxy-Info ]
+*[ Route-Record ]
+*[ Load ]
+*[ AVP ]
  */
 
-public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
+public class CreditControlAnswer extends DiameterPacket {
 
     // AVP definitions
     @InnerAvp @Setter @Getter
@@ -95,8 +146,12 @@ public class CreditControlAnswer extends DiameterPacket<CreditControlAnswer> {
     }
 
     @Override
-    public CreditControlAnswer decode(DiameterPacketHeader header, byte[] buffer) {
-        return DiameterPacketDecoder.packetDecode(this);
+    public void  decode(DiameterPacketHeader header, byte[] buffer) {
+        DiameterPacketDecoder.packetDecode(this);
     }
 
+    @Override
+    public byte[] encode() {
+        return DiameterPacketEncoder.encode(this);
+    }
 }

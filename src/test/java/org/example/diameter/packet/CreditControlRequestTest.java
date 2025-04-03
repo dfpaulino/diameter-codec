@@ -17,8 +17,8 @@ class CreditControlRequestTest {
     @Test
     public void decode() {
         DiameterPacketHeader header = ReadDiameterHeader.readDiameterHeaderFromBytes(buffer);
-        DiameterPacket<CreditControlRequest> creditControlRequestDiameterPacket = new CreditControlRequest(header, buffer);
-        CreditControlRequest ccr = creditControlRequestDiameterPacket.getData();
+        CreditControlRequest ccr = new CreditControlRequest(header, buffer);
+
 
         // assert headers
         assertThat(ccr.getHeader().getCommandCode()).isEqualTo(272);
@@ -75,7 +75,7 @@ class CreditControlRequestTest {
 
         DiameterPacketHeader header = ReadDiameterHeader.readDiameterHeaderFromBytes(diamPacket);
         CreditControlRequest ccr = new CreditControlRequest(header,diamPacket);
-        assertThat(ccr.getData().getQoSInformation().getData()).isNotNull();
+        assertThat(ccr.getQoSInformation().getData()).isNotNull();
 
         assertThat(ccr.getHeader().getCommandCode()).isEqualTo(272);
         assertThat(ccr.getHeader().getCommandFlags()).isEqualTo((byte) 0xc0);

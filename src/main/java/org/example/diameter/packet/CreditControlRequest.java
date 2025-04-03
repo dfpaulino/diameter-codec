@@ -6,6 +6,7 @@ import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.gx.*;
 import org.example.diameter.avp.rx.AccessNetworkChargingAddress;
+import org.example.diameter.packet.utils.DiameterPacketDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,7 @@ X[ 3GPP-PS-Data-Off-Status ]
 *[ AVP ]
  */
 
-public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
+public class CreditControlRequest extends DiameterPacket {
 
     // AVP definitions
     @InnerAvp @Setter @Getter
@@ -183,8 +184,8 @@ public class CreditControlRequest extends DiameterPacket<CreditControlRequest> {
     }
 
     @Override
-    public CreditControlRequest decode(DiameterPacketHeader header, byte[] buffer) {
-        return DiameterPacketDecoder.packetDecode(this);
+    public void decode(DiameterPacketHeader header, byte[] buffer) {
+        DiameterPacketDecoder.packetDecode(this);
     }
 
     public void setAccessNetworkChargingIdentifierGx(AccessNetworkChargingIdentifierGx accessNetworkChargingIdentifierGx) {

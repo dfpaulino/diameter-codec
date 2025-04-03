@@ -3,6 +3,7 @@ package org.example.diameter.packet;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.common.*;
+import org.example.diameter.packet.utils.DiameterPacketDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ Message Format
                 [ Firmware-Revision ]
               * [ AVP ]
  */
-public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExchangeRequest> {
+public class CapabilitiesExchangeRequest extends DiameterPacket {
     // AVP definitions
     @Setter
     @Getter
@@ -61,8 +62,8 @@ public class CapabilitiesExchangeRequest extends DiameterPacket<CapabilitiesExch
         super();
     }
     @Override
-    public CapabilitiesExchangeRequest decode(DiameterPacketHeader header, byte[] buffer) {
-        return DiameterPacketDecoder.packetDecode(this);
+    public void  decode(DiameterPacketHeader header, byte[] buffer) {
+        DiameterPacketDecoder.packetDecode(this);
     }
 
 
