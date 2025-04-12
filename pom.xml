@@ -5,11 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>SocketReadByteBuffer</artifactId>
+    <artifactId>diameter-gx-server-build</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <modules>
         <module>diameter-codec</module>
+        <module>diameter-server</module>
     </modules>
 
     <properties>

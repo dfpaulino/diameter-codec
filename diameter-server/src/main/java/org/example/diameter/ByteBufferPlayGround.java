@@ -1,4 +1,4 @@
-package org.example;
+package org.example.diameter;
 
 import java.nio.ByteBuffer;
 
