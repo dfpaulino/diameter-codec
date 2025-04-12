@@ -3,7 +3,6 @@ package org.example.diameter;
 import org.example.diameter.packet.CreditControlRequest;
 import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
-import org.example.diameter.packet.utils.DiameterPacketEncoder;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.slf4j.Logger;
@@ -35,10 +34,13 @@ public class DiameterServer implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         thread = new Thread(this::startServer);
         thread.start();
+    }
 
+    public void stopServer(){
+        thread.interrupt();
     }
 
     public void startServer() {
@@ -77,45 +79,49 @@ public class DiameterServer implements CommandLineRunner {
 
     }
 
-    private void readSocket(SelectionKey key)
-            throws IOException {
+    private void readSocket(SelectionKey key) throws  IOException{
         SocketChannel client = (SocketChannel) key.channel();
         //only allocated once for each socket channel
         ByteBuffer buffer = key.attachment() != null ? (ByteBuffer) key.attachment() : ByteBuffer.allocate(2048);
         List<DiameterPacket> packetList = new ArrayList<>();
-        int numBytsRead = 0;
-        logger.info("Reading from socket {}",client.getRemoteAddress().toString());
-        while ((numBytsRead = client.read(buffer)) > 0) {
-            //logger.info("Buffer before flip p {} l {} -in bytes {}",buffer.position(),buffer.limit(),numBytsRead);
-            buffer.flip();
-            //logger.info("Buffer after flip {} {}",buffer.position(),buffer.limit());
-            packetList.addAll(readRawFromBuffer(buffer));
-            //There is a partial packet still remaining in the buffer...remember this for next read iteration
-            if (buffer.hasRemaining()) {
-                byte[] tmp = new byte[buffer.remaining()];
-                //create a tmp buffer to store the remaining bytes belonging to the partial packet
-                System.arraycopy(buffer.array(),buffer.position(),tmp,0,buffer.remaining());
-                buffer.clear();
-                buffer.put(tmp);
-                //logger.info("partial bytes added to byffer {} {}",buffer.position(),buffer.limit());
-            } else {
-                buffer.clear();
+        int numBytsRead;
+        try{
+            logger.info("Reading from socket {}",client.getRemoteAddress().toString());
+            while ((numBytsRead = client.read(buffer)) > 0) {
+                //logger.info("Buffer before flip p {} l {} -in bytes {}",buffer.position(),buffer.limit(),numBytsRead);
+                buffer.flip();
+                //logger.info("Buffer after flip {} {}",buffer.position(),buffer.limit());
+                packetList.addAll(readRawFromBuffer(buffer));
+                //There is a partial packet still remaining in the buffer...remember this for next read iteration
+                if (buffer.hasRemaining()) {
+                    byte[] tmp = new byte[buffer.remaining()];
+                    //create a tmp buffer to store the remaining bytes belonging to the partial packet
+                    System.arraycopy(buffer.array(),buffer.position(),tmp,0,buffer.remaining());
+                    buffer.clear();
+                    buffer.put(tmp);
+                    //logger.info("partial bytes added to byffer {} {}",buffer.position(),buffer.limit());
+                } else {
+                    buffer.clear();
+                }
+                //attach the buffer to the client socket
+                key.attach(buffer);
             }
-            //attach the buffer to the client socket
-            key.attach(buffer);
-        }
-        logger.info("Number of read packets {}",this.packetCounter.get());
-        if (numBytsRead < 0) {
-            //close connection
-            logger.info("closing client {}",client.getRemoteAddress().toString());
+            logger.info("Number of read packets {}",this.packetCounter.get());
+            if (numBytsRead < 0) {
+                //close connection
+                throw new IOException("Client disconnected");
+            }
+        }catch (IOException ioException) {
+            logger.error("Closing client connection {} exception",client.getRemoteAddress().toString(),ioException);
             key.attach(null);
             key.cancel();
             client.close();
         }
 
+
     }
 
-    private List<DiameterPacket> readRawFromBuffer(ByteBuffer buffer) {
+    private List<DiameterPacket> readRawFromBuffer(ByteBuffer buffer) throws IOException {
         List<DiameterPacket> diameterPacketList = new ArrayList<>();
         byte[] packetLength = new byte[3];
         int originalPos=0;
@@ -124,6 +130,9 @@ public class DiameterServer implements CommandLineRunner {
             // we have at least a full header to read
             originalPos = buffer.position();
             byte version = buffer.get();
+            if(version!=DIAMETER_VERSION) {
+                throw new IOException("Packets out of order");
+            }
 
             buffer.get(packetLength, 0, 3);
             //create the byte array to store the packet
@@ -131,8 +140,8 @@ public class DiameterServer implements CommandLineRunner {
             //logger.info("Version {} length {} remaining {}", HexFormat.of().toHexDigits(version),len,buffer.remaining());
             // do we have all bytes in the buffer?, we already read 4 octets !
             buffer.position(originalPos);
+
             if(buffer.remaining()<(len)) {
-                //restore initial position
                 logger.info("partial packet detected");
                 break;
             }
