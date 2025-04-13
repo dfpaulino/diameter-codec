@@ -4,6 +4,7 @@ package org.example.diameter.packet;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.enums.AuthApplicationIdEnum;
 import org.example.diameter.avp.gx.*;
+import org.example.diameter.packet.messages.CreditControlAnswer;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.junit.jupiter.api.Test;
 

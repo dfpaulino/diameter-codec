@@ -6,6 +6,7 @@ import org.example.diameter.avp.enums.VendorId;
 import org.example.diameter.avp.types.Address;
 import org.example.diameter.packet.enums.DiameterApplicationId;
 import org.example.diameter.packet.enums.DiameterCmdCode;
+import org.example.diameter.packet.messages.CapabilitiesExchangeAnswer;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HexFormat;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CapabilitiesExchangeAnswerTest {
     private byte[] buffer = HexFormat.of().parseHex("010000e400000101000000001dc0b0828e4e21f80000010c4000000c000007d100000108400000177067772e6c6f63616c646f6d61696e0000000128400000136c6f63616c646f6d61696e00000001164000000c5e6948e4000001014000000e00017f00000300000000010a4000000c000000000000010d00000014667265656469616d657465720000010b0000000c0000283e0000010440000020000001024000000c010000160000010a4000000c000028af000001024000000cffffffff000001094000000c0000159f000001094000000c000028af000001094000000c000032db");
@@ -49,7 +49,7 @@ class CapabilitiesExchangeAnswerTest {
                 .commandCode(DiameterCmdCode.CAPABILITIES_EXCHANGE.getValue())
                 .commandFlags((byte)0x00)
                 .messageLength(0) // message len calculated by encode
-                .applicationId(DiameterApplicationId._3GPP.getValue())
+                .applicationId(DiameterApplicationId._3GPP_GX.getValue())
                 .end2End(12345)
                 .hopByHop(67890)
                 .build();
@@ -78,7 +78,7 @@ class CapabilitiesExchangeAnswerTest {
         assertThat(decodedCea.getHeader().getCommandCode()).isEqualTo(DiameterCmdCode.CAPABILITIES_EXCHANGE.getValue());
         assertThat(decodedCea.getHeader().getCommandFlags()&0x80).isEqualTo(0x00);
         assertThat(decodedCea.getHeader().getMessageLength()).isEqualTo(encoded.length);
-        assertThat(decodedCea.getHeader().getApplicationId()).isEqualTo(DiameterApplicationId._3GPP.getValue());
+        assertThat(decodedCea.getHeader().getApplicationId()).isEqualTo(DiameterApplicationId._3GPP_GX.getValue());
         assertThat(decodedCea.getHeader().getEnd2End()).isEqualTo(12345);
         assertThat(decodedCea.getHeader().getHopByHop()).isEqualTo(67890);
 

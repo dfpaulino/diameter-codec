@@ -1,10 +1,12 @@
-package org.example.diameter.packet;
+package org.example.diameter.packet.messages;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.avp.gx.*;
+import org.example.diameter.packet.DiameterPacket;
+import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.packet.utils.DiameterPacketDecoder;
 import org.example.diameter.packet.utils.DiameterPacketEncoder;
 

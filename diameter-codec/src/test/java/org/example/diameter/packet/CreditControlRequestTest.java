@@ -1,7 +1,7 @@
 package org.example.diameter.packet;
 
 
-import org.example.diameter.avp.AvpHeader;
+import org.example.diameter.packet.messages.CreditControlRequest;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.junit.jupiter.api.Test;
 

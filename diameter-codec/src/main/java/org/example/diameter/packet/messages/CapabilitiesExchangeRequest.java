@@ -1,9 +1,11 @@
-package org.example.diameter.packet;
+package org.example.diameter.packet.messages;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
+import org.example.diameter.packet.DiameterPacket;
+import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.packet.utils.DiameterPacketDecoder;
 import org.example.diameter.packet.utils.DiameterPacketEncoder;
 
@@ -13,16 +15,13 @@ import java.util.List;
 /*
 Message Format
 
-     <CEA> ::= < Diameter Header: 257 >
-                { Result-Code }
+      <CER> ::= < Diameter Header: 257, REQ >
                 { Origin-Host }
                 { Origin-Realm }
              1* { Host-IP-Address }
                 { Vendor-Id }
                 { Product-Name }
                 [ Origin-State-Id ]
-                [ Error-Message ]
-              * [ Failed-AVP ]
               * [ Supported-Vendor-Id ]
               * [ Auth-Application-Id ]
               * [ Inband-Security-Id ]
@@ -31,11 +30,8 @@ Message Format
                 [ Firmware-Revision ]
               * [ AVP ]
  */
-public class CapabilitiesExchangeAnswer extends DiameterPacket {
-
+public class CapabilitiesExchangeRequest extends DiameterPacket {
     // AVP definitions
-    @InnerAvp @Setter @Getter
-    private ResultCode resultCode;
     @InnerAvp @Setter @Getter
     private OriginHost originHost;
     @InnerAvp @Setter @Getter
@@ -56,16 +52,15 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket {
     private List<VendorSpecificApplicationId> vendorSpecificApplicationId;
 
     // called when received from socket
-    public CapabilitiesExchangeAnswer(DiameterPacketHeader header, byte[] rawData) {
+    public CapabilitiesExchangeRequest(DiameterPacketHeader header, byte[] rawData) {
         super(header, rawData);
     }
 
-    public CapabilitiesExchangeAnswer() {
+    public CapabilitiesExchangeRequest() {
         super();
     }
-
     @Override
-    public void decode(DiameterPacketHeader header, byte[] buffer) {
+    public void  decode(DiameterPacketHeader header, byte[] buffer) {
         DiameterPacketDecoder.packetDecode(this);
     }
 
@@ -75,27 +70,23 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket {
     }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
-        if(this.supportedVendorId == null) {
-            this.supportedVendorId = new ArrayList<>();
+        if (this.supportedVendorId == null) {
+            this.supportedVendorId = new ArrayList<>(2);
         }
         this.supportedVendorId.add(supportedVendorId);
     }
 
-    public void setVendorSpecificApplicationId(VendorSpecificApplicationId vendorSpecificApplicationId) {
-        if(this.vendorSpecificApplicationId == null) {
-            this.vendorSpecificApplicationId = new ArrayList<>();
-        }
-        this.vendorSpecificApplicationId.add(vendorSpecificApplicationId);
-    }
-
     public void setAuthApplicationId(AuthApplicationId authApplicationId) {
-        if(this.authApplicationId == null) {
-            this.authApplicationId = new ArrayList<>();
+        if (this.authApplicationId == null) {
+            this.authApplicationId = new ArrayList<>(2);
         }
         this.authApplicationId.add(authApplicationId);
     }
 
-
-
-
+    public void setVendorSpecificApplicationId(VendorSpecificApplicationId vendorSpecificApplicationId) {
+        if (this.vendorSpecificApplicationId == null) {
+            this.vendorSpecificApplicationId = new ArrayList<>(2);
+        }
+        this.vendorSpecificApplicationId.add(vendorSpecificApplicationId);
+    }
 }

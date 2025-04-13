@@ -1,6 +1,7 @@
 package org.example.diameter;
 
-import org.example.diameter.packet.CreditControlRequest;
+import org.example.diameter.packet.factory.DiameterPacketDecodeGxFactory;
+import org.example.diameter.packet.factory.DiameterPacketFactory;
 import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.utils.ReadBytesUtils;
@@ -28,9 +29,12 @@ public class DiameterServer implements CommandLineRunner {
     private final String ip;
     private final int port;
     private Thread thread;
+    private final DiameterPacketFactory diameterPacketFactory;
+
     public DiameterServer() {
         this.ip = "localhost";
         this.port = 5858;
+        this.diameterPacketFactory = new DiameterPacketDecodeGxFactory();
     }
 
     @Override
@@ -152,7 +156,7 @@ public class DiameterServer implements CommandLineRunner {
             byte[] packet = new byte[len];
             buffer.get(packet, 0, len);
             DiameterPacketHeader header = ReadDiameterHeader.readDiameterHeaderFromBytes(packet);
-            DiameterPacket diameterPacket = new CreditControlRequest(header,packet);
+            DiameterPacket diameterPacket = diameterPacketFactory.of(header,packet);
             //logger.info("full packet added to list");
             packetCounter.incrementAndGet();
             diameterPacketList.add(diameterPacket);
