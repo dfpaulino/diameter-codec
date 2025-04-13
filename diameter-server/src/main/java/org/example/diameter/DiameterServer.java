@@ -4,6 +4,7 @@ import org.example.diameter.packet.factory.DiameterPacketDecodeGxFactory;
 import org.example.diameter.packet.factory.DiameterPacketFactory;
 import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
+import org.example.diameter.packet.factory.DiameterPacketFactoryImpl;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class DiameterServer implements CommandLineRunner {
     public DiameterServer() {
         this.ip = "localhost";
         this.port = 5858;
-        this.diameterPacketFactory = new DiameterPacketDecodeGxFactory();
+        this.diameterPacketFactory = new DiameterPacketFactoryImpl();
     }
 
     @Override
