@@ -11,14 +11,18 @@ import org.example.diameter.packet.messages.CreditControlRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DiameterPacketFactoryImpl implements DiameterPacketFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(DiameterPacketFactoryImpl.class);
 
-    private final DiameterPacketFactory diameterPacketDecodeGxFactory;
+    // TODO use Map<Int, Factories> to map from ApplicationId
+    private final Map<Long,DiameterPacketFactory> diameterPacketApplicationFactory = new HashMap<>();
 
     public DiameterPacketFactoryImpl() {
-        this.diameterPacketDecodeGxFactory = new DiameterPacketDecodeGxFactory();
+        diameterPacketApplicationFactory.put((long)DiameterApplicationId._3GPP_GX.getValue(),new DiameterPacketDecodeGxFactory());
     }
 
     @Override
@@ -36,20 +40,20 @@ public class DiameterPacketFactoryImpl implements DiameterPacketFactory {
         } else {
             // TODO support RAA
             switch (DiameterCmdCode.of(header.getCommandCode())){
-                case CREDIT_CONTROL:diameterPacket=new CreditControlAnswer(header,buffer);break;
+                case CREDIT_CONTROL:diameterPacket=getCcrPacket(header,buffer);break;
                 case CAPABILITIES_EXCHANGE:diameterPacket=new CapabilitiesExchangeAnswer(header,buffer);break;
             }
         }
         return diameterPacket;
     }
 
-    //get the correct diameter packet based on the ApplicationId(GX)
     private DiameterPacket getCcrPacket(DiameterPacketHeader header, byte[] buffer) {
-        if(header.getApplicationId() == DiameterApplicationId._3GPP_GX.getValue()){
-            return diameterPacketDecodeGxFactory.of(header,buffer);
-        } else {
+        if(diameterPacketApplicationFactory.containsKey(header.getApplicationId())) {
+            return diameterPacketApplicationFactory.get(header.getApplicationId()).of(header,buffer);
+        }else {
             logger.warn("unsupported ApplicationId {}. to be discarded",header.getApplicationId());
             return null;
         }
+
     }
 }

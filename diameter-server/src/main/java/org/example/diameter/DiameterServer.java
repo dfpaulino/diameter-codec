@@ -159,8 +159,10 @@ public class DiameterServer implements CommandLineRunner {
             DiameterPacketHeader header = ReadDiameterHeader.readDiameterHeaderFromBytes(packet);
             DiameterPacket diameterPacket = diameterPacketFactory.of(header,packet);
             //logger.info("full packet added to list");
-            packetCounter.incrementAndGet();
-            diameterPacketList.add(diameterPacket);
+            if(diameterPacket!=null) {
+                packetCounter.incrementAndGet();
+                diameterPacketList.add(diameterPacket);
+            }
         }
 
         return diameterPacketList;
