@@ -2,8 +2,10 @@ package org.example.diameter.packet;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.packet.utils.DiameterPacketDecoder;
+import org.example.diameter.packet.utils.DiameterPacketEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +30,23 @@ Message Format
  */
 public class CapabilitiesExchangeRequest extends DiameterPacket {
     // AVP definitions
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginHost originHost;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginRealm originRealm;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private HostIpAddress hostIpAddress;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private VendorId vendorId;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private ProductName productName;
-    @Setter
-    @Getter
+    @InnerAvp @Setter @Getter
     private OriginStateId originStateId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<AuthApplicationId> authApplicationId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<SupportedVendorId> supportedVendorId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<VendorSpecificApplicationId> vendorSpecificApplicationId;
 
     // called when received from socket
@@ -66,7 +62,10 @@ public class CapabilitiesExchangeRequest extends DiameterPacket {
         DiameterPacketDecoder.packetDecode(this);
     }
 
-
+    @Override
+    public byte[] encode() {
+        return DiameterPacketEncoder.encode(this);
+    }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {
         if (this.supportedVendorId == null) {

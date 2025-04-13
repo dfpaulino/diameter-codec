@@ -94,8 +94,9 @@ public class DiameterServer implements CommandLineRunner {
                 packetList.addAll(readRawFromBuffer(buffer));
                 //There is a partial packet still remaining in the buffer...remember this for next read iteration
                 if (buffer.hasRemaining()) {
-                    byte[] tmp = new byte[buffer.remaining()];
                     //create a tmp buffer to store the remaining bytes belonging to the partial packet
+                    // and copy to the client buffer for next read
+                    byte[] tmp = new byte[buffer.remaining()];
                     System.arraycopy(buffer.array(),buffer.position(),tmp,0,buffer.remaining());
                     buffer.clear();
                     buffer.put(tmp);

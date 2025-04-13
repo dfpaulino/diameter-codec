@@ -12,7 +12,7 @@ import static org.example.diameter.avp.AvpTypeDecoders.OctectStringUTF8Decoder;
 @AvpRegister(avpCode =269,avpBuilderMethod = "byteToAvp")
 public class ProductName extends Avp<String> {
     public static int avpCode = 269;
-    public static byte flags = (byte) 0xc0;
+    public static byte flags = (byte) 0x00;
 
     public ProductName(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);

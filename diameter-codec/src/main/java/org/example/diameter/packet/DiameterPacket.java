@@ -42,6 +42,7 @@ public abstract class DiameterPacket {
     public DiameterPacket(DiameterPacketHeader header, byte[] buffer) {
         this.header = header;
         this.buffer = buffer;
+        // decode the 1st level of avps only
         this.decode(header, buffer);
     }
 

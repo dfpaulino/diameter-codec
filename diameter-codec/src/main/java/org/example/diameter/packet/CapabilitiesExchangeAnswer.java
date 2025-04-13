@@ -2,8 +2,10 @@ package org.example.diameter.packet;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.diameter.avp.InnerAvp;
 import org.example.diameter.avp.common.*;
 import org.example.diameter.packet.utils.DiameterPacketDecoder;
+import org.example.diameter.packet.utils.DiameterPacketEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,26 +34,26 @@ Message Format
 public class CapabilitiesExchangeAnswer extends DiameterPacket {
 
     // AVP definitions
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private ResultCode resultCode;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private OriginHost originHost;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private OriginRealm originRealm;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private HostIpAddress hostIpAddress;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private VendorId vendorId;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private ProductName productName;
-    @Getter@Setter
+    @InnerAvp @Setter @Getter
     private OriginStateId originStateId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<AuthApplicationId> authApplicationId;
-    @Getter
+    @InnerAvp(isCollection = true) @Getter
     private List<SupportedVendorId> supportedVendorId;
-    @Getter
-    private List<VendorSpecificApplicationId> vendorSpecificApplicationId = new ArrayList<>();
+    @InnerAvp(isCollection = true) @Getter
+    private List<VendorSpecificApplicationId> vendorSpecificApplicationId;
 
     // called when received from socket
     public CapabilitiesExchangeAnswer(DiameterPacketHeader header, byte[] rawData) {
@@ -65,6 +67,11 @@ public class CapabilitiesExchangeAnswer extends DiameterPacket {
     @Override
     public void decode(DiameterPacketHeader header, byte[] buffer) {
         DiameterPacketDecoder.packetDecode(this);
+    }
+
+    @Override
+    public byte[] encode() {
+        return DiameterPacketEncoder.encode(this);
     }
 
     public void setSupportedVendorId(SupportedVendorId supportedVendorId) {

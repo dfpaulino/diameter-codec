@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum DiameterApplicationId {
-    _3GPP(16777238);
+    _3GPP(16777238),
+    _RX(16777236);
 
     private final int value;
     private static Map<Integer, DiameterApplicationId> map = new HashMap<>();

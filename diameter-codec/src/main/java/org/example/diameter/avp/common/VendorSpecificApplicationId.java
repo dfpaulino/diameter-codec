@@ -18,6 +18,11 @@ public class VendorSpecificApplicationId extends Avp<VendorSpecificApplicationId
     public VendorSpecificApplicationId(AvpHeader header, byte[] buffer, int position) {
         super(header, buffer, position);
     }
+
+    public VendorSpecificApplicationId() {
+        super(null);
+    }
+
     public static AvpBuilder byteToAvp(){
         return new AvpBuilder((VendorSpecificApplicationId::new));
     }
