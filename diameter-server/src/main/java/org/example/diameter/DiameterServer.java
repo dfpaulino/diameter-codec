@@ -5,6 +5,7 @@ import org.example.diameter.packet.factory.DiameterPacketFactory;
 import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.packet.factory.DiameterPacketFactoryImpl;
+import org.example.diameter.service.DiameterPacketHandlerService;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.utils.ReadDiameterHeader;
 import org.slf4j.Logger;
@@ -29,13 +30,17 @@ public class DiameterServer implements CommandLineRunner {
     private final AtomicInteger packetCounter = new AtomicInteger(0);
     private final String ip;
     private final int port;
-    private Thread thread;
     private final DiameterPacketFactory diameterPacketFactory;
+    private final DiameterPacketHandlerService diameterPacketHandlerService;
+    private Thread thread;
 
-    public DiameterServer() {
+
+    public DiameterServer(DiameterPacketHandlerService diameterPacketHandlerService,
+                          DiameterPacketFactory diameterPacketFactory) {
         this.ip = "localhost";
         this.port = 5858;
-        this.diameterPacketFactory = new DiameterPacketFactoryImpl();
+        this.diameterPacketFactory = diameterPacketFactory;
+        this.diameterPacketHandlerService = diameterPacketHandlerService;
     }
 
     @Override
@@ -97,6 +102,7 @@ public class DiameterServer implements CommandLineRunner {
                 buffer.flip();
                 //logger.info("Buffer after flip {} {}",buffer.position(),buffer.limit());
                 packetList.addAll(readRawFromBuffer(buffer));
+
                 //There is a partial packet still remaining in the buffer...remember this for next read iteration
                 if (buffer.hasRemaining()) {
                     //create a tmp buffer to store the remaining bytes belonging to the partial packet
@@ -123,8 +129,14 @@ public class DiameterServer implements CommandLineRunner {
             key.cancel();
             client.close();
         }
-
-
+        //submit packets to packet handler
+        packetList.forEach( packet -> {
+                    DiameterReqContext reqContext = ModifiableDiameterReqContext.create()
+                            .setRequest(packet)
+                            .setReceivedTime(System.currentTimeMillis())
+                            .setSocketChannel(client);
+                    this.diameterPacketHandlerService.handlePacket(reqContext);
+                });
     }
 
     private List<DiameterPacket> readRawFromBuffer(ByteBuffer buffer) throws IOException {
