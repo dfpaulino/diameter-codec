@@ -47,6 +47,7 @@ public class EchoClient {
                 buffer.rewind();
                 i++;
             }
+            Thread.sleep(1000);
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

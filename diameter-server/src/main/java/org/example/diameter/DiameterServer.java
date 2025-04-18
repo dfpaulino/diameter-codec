@@ -5,6 +5,7 @@ import org.example.diameter.packet.factory.DiameterPacketFactory;
 import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.packet.factory.DiameterPacketFactoryImpl;
+import org.example.diameter.properties.DiameterServerProperties;
 import org.example.diameter.service.DiameterPacketHandlerService;
 import org.example.diameter.utils.ReadBytesUtils;
 import org.example.diameter.utils.ReadDiameterHeader;
@@ -31,12 +32,14 @@ public class DiameterServer implements CommandLineRunner {
     private final String ip;
     private final int port;
     private final DiameterPacketFactory diameterPacketFactory;
+    private final DiameterServerProperties properties;
     private final DiameterPacketHandlerService diameterPacketHandlerService;
     private Thread thread;
 
 
     public DiameterServer(DiameterPacketHandlerService diameterPacketHandlerService,
-                          DiameterPacketFactory diameterPacketFactory) {
+                          DiameterPacketFactory diameterPacketFactory, DiameterServerProperties properties) {
+        this.properties = properties;
         this.ip = "localhost";
         this.port = 5858;
         this.diameterPacketFactory = diameterPacketFactory;
