@@ -6,4 +6,5 @@
         <appender-ref ref="CONSOLE" />
     </root>
     <logger name="org.springframework" level="INFO"/>
+    <logger name="org.example.diameter" level="DEBUG"/>
 </configuration>

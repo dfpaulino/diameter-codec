@@ -3,8 +3,6 @@ package org.example.diameter.packet.factory;
 
 import org.example.diameter.packet.*;
 import org.example.diameter.packet.enums.DiameterCmdCode;
-import org.example.diameter.packet.messages.CapabilitiesExchangeAnswer;
-import org.example.diameter.packet.messages.CapabilitiesExchangeRequest;
 import org.example.diameter.packet.messages.CreditControlAnswer;
 import org.example.diameter.packet.messages.CreditControlRequest;
 import org.slf4j.Logger;

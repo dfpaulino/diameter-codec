@@ -60,7 +60,7 @@ class CapabilitiesExchangeRequestTest {
         cer.setProductName(new ProductName("freediameter"));
         cer.setVendorId(new org.example.diameter.avp.common.VendorId(VendorId.GPP.getValue()));
         VendorSpecificApplicationId vendorSpecificApplicationId = new VendorSpecificApplicationId();
-        vendorSpecificApplicationId.setAuthApplicationId(new AuthApplicationId(AuthApplicationIdEnum.TGPP.getValue()));
+        vendorSpecificApplicationId.setAuthApplicationId(new AuthApplicationId(AuthApplicationIdEnum.TGPP_GX.getValue()));
         vendorSpecificApplicationId.setVendorId(new org.example.diameter.avp.common.VendorId(VendorId.GPP.getValue()));
         cer.setVendorSpecificApplicationId(vendorSpecificApplicationId);
 

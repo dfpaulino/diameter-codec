@@ -4,10 +4,7 @@ import org.example.diameter.packet.DiameterPacket;
 import org.example.diameter.packet.DiameterPacketHeader;
 import org.example.diameter.packet.enums.DiameterApplicationId;
 import org.example.diameter.packet.enums.DiameterCmdCode;
-import org.example.diameter.packet.messages.CapabilitiesExchangeAnswer;
-import org.example.diameter.packet.messages.CapabilitiesExchangeRequest;
-import org.example.diameter.packet.messages.CreditControlAnswer;
-import org.example.diameter.packet.messages.CreditControlRequest;
+import org.example.diameter.packet.messages.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +32,13 @@ public class DiameterPacketFactoryImpl implements DiameterPacketFactory {
             switch (DiameterCmdCode.of(header.getCommandCode())){
                 case CREDIT_CONTROL:diameterPacket=getCcrPacket(header,buffer);break;
                 case CAPABILITIES_EXCHANGE:diameterPacket=new CapabilitiesExchangeRequest(header,buffer);break;
+                case DWD:diameterPacket = new DeviceWatchDogReq(header,buffer);
                 default:logger.warn("unsupported diameter message {}. to be discarded",header.getCommandCode());
             }
         } else {
             // TODO support RAA
             switch (DiameterCmdCode.of(header.getCommandCode())){
                 case CREDIT_CONTROL:diameterPacket=getCcrPacket(header,buffer);break;
-                case CAPABILITIES_EXCHANGE:diameterPacket=new CapabilitiesExchangeAnswer(header,buffer);break;
             }
         }
         return diameterPacket;

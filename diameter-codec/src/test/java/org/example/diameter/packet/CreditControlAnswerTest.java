@@ -73,7 +73,7 @@ class CreditControlAnswerTest {
         DiameterPacketHeader headeractual = ReadDiameterHeader.readDiameterHeaderFromBytes(encoded);
         CreditControlAnswer ccaActual = new CreditControlAnswer(headeractual,encoded);
 
-        assertThat(ccaActual.getAuthApplicationId().getData()).isEqualTo(AuthApplicationIdEnum.TGPP.getValue());
+        assertThat(ccaActual.getAuthApplicationId().getData()).isEqualTo(AuthApplicationIdEnum.TGPP_GX.getValue());
         assertThat(ccaActual.getSessionId().getData()).isEqualTo("string;459;844;IMSI999991234567810");
         assertThat(ccaActual.getOriginHost().getData()).isEqualTo("pcrf.local");
         assertThat(ccaActual.getOriginRealm().getData()).isEqualTo("home.com");
@@ -107,7 +107,7 @@ class CreditControlAnswerTest {
         CreditControlAnswer cca = new CreditControlAnswer();
         cca.setHeader(header);
         cca.setSessionId(new SessionId("string;459;844;IMSI999991234567810"));
-        cca.setAuthApplicationId(new AuthApplicationId(AuthApplicationIdEnum.TGPP.getValue()));
+        cca.setAuthApplicationId(new AuthApplicationId(AuthApplicationIdEnum.TGPP_GX.getValue()));
         cca.setOriginHost(new OriginHost("pcrf.local"));
         cca.setOriginRealm(new OriginRealm("home.com"));
         cca.setResultCode(new ResultCode(2001));

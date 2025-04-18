@@ -12,4 +12,5 @@ public interface DiameterReqContext {
     SocketChannel getSocketChannel();
     long getReceivedTime();
     long getRespTime();
+
 }

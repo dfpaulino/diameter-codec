@@ -1,7 +1,6 @@
 package org.example.diameter.avp.common;
 
 
-import org.example.diameter.avp.Avp;
 import org.example.diameter.avp.AvpHeader;
 import org.example.diameter.avp.enums.AuthApplicationIdEnum;
 import org.example.diameter.utils.ReadAvpHeader;
@@ -20,13 +19,13 @@ class AuthApplicationIdTest {
         AuthApplicationId authApplicationId = new AuthApplicationId(header,BUFFER,0);
         assertThat(authApplicationId.getHeader().getAvpCode()).isEqualTo(258);
         assertThat(authApplicationId.getHeader().getAvpLength()).isEqualTo(12);
-        assertThat(authApplicationId.getData()).isEqualTo(AuthApplicationIdEnum.TGPP.getValue());
+        assertThat(authApplicationId.getData()).isEqualTo(AuthApplicationIdEnum.TGPP_GX.getValue());
     }
 
     @Test
     public void encode(){
         //let do the inverse
-        AuthApplicationId authApplicationId = new AuthApplicationId(AuthApplicationIdEnum.TGPP.getValue());
+        AuthApplicationId authApplicationId = new AuthApplicationId(AuthApplicationIdEnum.TGPP_GX.getValue());
         byte[] buffer = authApplicationId.encode();
         assertThat(buffer).isEqualTo(BUFFER);
 

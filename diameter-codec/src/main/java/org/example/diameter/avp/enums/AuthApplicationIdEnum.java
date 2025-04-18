@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum AuthApplicationIdEnum {
-    TGPP(16777238);
+    TGPP_GX(16777238),
+    TGPP_RX(16777236);
     private int value;
     private static Map<Integer,AuthApplicationIdEnum> map = new HashMap<>();
 
