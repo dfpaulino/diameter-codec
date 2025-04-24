@@ -12,6 +12,7 @@
     <modules>
         <module>diameter-codec</module>
         <module>diameter-server</module>
+        <module>pcc-client</module>
     </modules>
 
     <properties>

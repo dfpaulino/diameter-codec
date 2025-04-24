@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class CcrInitialHandler implements CcrGxHandler{
     @Override
     public Mono<CreditControlAnswer> handle(CreditControlRequest ccr) {
-        // ccr -> webclient ->map Mono<cca>
+        // ccr -> webclient ->flatmap(mapHttpToGx)
         return Mono.empty();
     }
 }
