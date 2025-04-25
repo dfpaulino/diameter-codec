@@ -3,7 +3,7 @@ package org.example.diameter.config;
 
 import org.example.diameter.DiameterReqContext;
 import org.example.diameter.handlers.DiameterPacketHandler;
-import org.example.diameter.handlers.Gx.GxPacketHandler;
+import org.example.diameter.handlers.Gx.*;
 import org.example.diameter.handlers.PacketHandlerApplicationIdRouter;
 import org.example.diameter.handlers.common.BasePacketHandler;
 import org.example.diameter.packet.factory.DiameterPacketFactory;
@@ -31,7 +31,11 @@ public class DiameterServerConfiguration {
     @Bean("packetHandlerApplicationIdRouter")
     public DiameterPacketHandler packetHandlerApplicationIdRouter(DiameterServerProperties properties) {
 
-        return new PacketHandlerApplicationIdRouter(new GxPacketHandler(properties), new BasePacketHandler(properties));
+        CcrGxHandler ccrInitialHandler = new CcrInitialHandler(properties);
+        CcrGxHandler ccrUpdateHandler = new CcrUpdateHandler(properties);
+        CcrGxHandler ccrTerminateHandler = new CcrTerminateHandler(properties);
+        DiameterPacketHandler GxPacketHandler = new GxPacketHandler(properties, ccrInitialHandler, ccrUpdateHandler, ccrTerminateHandler);
+        return new PacketHandlerApplicationIdRouter(GxPacketHandler, new BasePacketHandler(properties));
     }
 
     @Bean
