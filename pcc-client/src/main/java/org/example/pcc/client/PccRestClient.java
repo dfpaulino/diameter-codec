@@ -21,6 +21,8 @@ public class PccRestClient {
     public Mono<SessionPolicy> createSession(@RequestBody SessionInitContext context) {
         return webClient.post()
                 .uri("/npcf-smpolicycontrol/v1/sm-policies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(context)
                 .retrieve()
                 .bodyToMono(SessionPolicy.class);

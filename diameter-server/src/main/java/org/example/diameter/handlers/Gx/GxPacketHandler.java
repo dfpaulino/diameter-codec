@@ -42,21 +42,21 @@ public class GxPacketHandler implements DiameterPacketHandler {
     }
     private Mono<DiameterReqContext> sessionInit (DiameterReqContext reqContext) {
         CreditControlRequest ccr = (CreditControlRequest)reqContext.getRequest();
-        return Mono.just(reqContext)
+        return Mono.just(ccr)
                 .flatMap(ctx ->this.ccrInitialHandler.handle(ccr))
                 .map(cca->this.fromAnswer(reqContext,cca));
     }
 
     private Mono<DiameterReqContext> sessionUpdate (DiameterReqContext reqContext) {
         CreditControlRequest ccr = (CreditControlRequest)reqContext.getRequest();
-        return Mono.just(reqContext)
+        return Mono.just(ccr)
                 .flatMap(ctx ->this.ccrUpdateHandler.handle(ccr))
                 .map(cca->this.fromAnswer(reqContext,cca));
     }
 
     private Mono<DiameterReqContext> sessionTerminate (DiameterReqContext reqContext) {
         CreditControlRequest ccr = (CreditControlRequest)reqContext.getRequest();
-        return Mono.just(reqContext)
+        return Mono.just(ccr)
                 .flatMap(ctx ->this.ccrTerminateHandler.handle(ccr))
                 .map(cca->this.fromAnswer(reqContext,cca));
     }

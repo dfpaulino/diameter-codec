@@ -2,10 +2,11 @@ package org.example.pcc.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
+@NoArgsConstructor
 @Data
 public class PccRule {
     private String name;

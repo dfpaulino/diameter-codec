@@ -4,11 +4,14 @@ package org.example.diameter.config;
 import org.example.diameter.DiameterReqContext;
 import org.example.diameter.handlers.DiameterPacketHandler;
 import org.example.diameter.handlers.Gx.*;
+import org.example.diameter.handlers.Gx.mappers.GxToPccHttpMapper;
+import org.example.diameter.handlers.Gx.mappers.GxToPccHttpMapperImpl;
 import org.example.diameter.handlers.PacketHandlerApplicationIdRouter;
 import org.example.diameter.handlers.common.BasePacketHandler;
 import org.example.diameter.packet.factory.DiameterPacketFactory;
 import org.example.diameter.packet.factory.DiameterPacketFactoryImpl;
 import org.example.diameter.properties.DiameterServerProperties;
+import org.example.pcc.client.PccRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +31,18 @@ public class DiameterServerConfiguration {
         return new DiameterPacketFactoryImpl();
     }
 
+    @Autowired
+    PccRestClient pccRestClient;
+
+    @Bean
+    GxToPccHttpMapper gxToPccHttpMapper() {
+        return new GxToPccHttpMapperImpl();
+    }
+
     @Bean("packetHandlerApplicationIdRouter")
     public DiameterPacketHandler packetHandlerApplicationIdRouter(DiameterServerProperties properties) {
 
-        CcrGxHandler ccrInitialHandler = new CcrInitialHandler(properties);
+        CcrGxHandler ccrInitialHandler = new CcrInitialHandler(properties,pccRestClient,gxToPccHttpMapper());
         CcrGxHandler ccrUpdateHandler = new CcrUpdateHandler(properties);
         CcrGxHandler ccrTerminateHandler = new CcrTerminateHandler(properties);
         DiameterPacketHandler GxPacketHandler = new GxPacketHandler(properties, ccrInitialHandler, ccrUpdateHandler, ccrTerminateHandler);
